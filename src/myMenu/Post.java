@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class Post extends JFrame {
+	final static String IMG_LOC = "E:/2020/java/workspace/instagram/img/"; // 유저가 저장하는 이미지
 	boolean fileExist; // 사진이 선택되었는지 여부
 	File selectF;
 	String selectFName;
@@ -66,7 +67,7 @@ public class Post extends JFrame {
 
 					fileExist = true; // 필수값이니까 선택했으면 true
 				} else {
-					JOptionPane.showMessageDialog(pnImg, "사진 선택 취소");
+					JOptionPane.showMessageDialog(pnImg, "Cancelled.");
 				}
 			}
 		});
@@ -83,7 +84,7 @@ public class Post extends JFrame {
 					PostDTO dto = new PostDTO();
 					PostDAO dao = new PostDAO();
 
-					SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
+					SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd HHmmss");
 					String pCDate = String.valueOf(format.format(date));
 					String uID = "aaaa"; // 나중에 받아오기
 
@@ -96,7 +97,7 @@ public class Post extends JFrame {
 						saveImg.createGraphics().drawImage(img, 0, 0, Post.this);
 
 						String imgName = uID + "_" + pCDate + "_" + selectFName;
-						File saveFile = new File("E:/2020/java/workspace/instagram/images2/", imgName);
+						File saveFile = new File(IMG_LOC, imgName);
 						ImageIO.write(saveImg, "jpg", saveFile);
 
 						String pCon = taCon.getText();
@@ -106,7 +107,7 @@ public class Post extends JFrame {
 						dto.setpImg(pImg);
 						dto.setpCDate(pCDate);
 						dto.setuID(uID);
-						
+
 						dao.create(dto);
 					} catch (Exception e2) {
 						e2.printStackTrace();
@@ -114,10 +115,14 @@ public class Post extends JFrame {
 
 					lbShowImg.setIcon(null);
 					taCon.setText(null);
-
-					JOptionPane.showMessageDialog(pnCon, "게시글 생성 성공");
+					selectF = null;
+					selectFName = null;
+					selectFLoc = null;
+					fileExist = false;
+					
+					JOptionPane.showMessageDialog(pnCon, "Completed.");
 				} else {
-					JOptionPane.showMessageDialog(pnCon, "사진을 선택해주세요!");
+					JOptionPane.showMessageDialog(pnCon, "Select a image!");
 				}
 			}
 		});

@@ -1,4 +1,4 @@
-package db;
+package myMenu;
 
 public class CommentDTO {
 	private int cNo;
@@ -68,7 +68,7 @@ public class CommentDTO {
 	
 	@Override
 	public String toString() {
-		return "Comment [cNo=" + cNo + ", cCon=" + cCon + ", cCDate=" + cCDate + ", cUDate=" + cUDate + ", uID=" + uID
-				+ ", pNo=" + pNo + "]";
+		return cNo + "," + cCon + "," + cCDate + "," + cUDate + "," + uID
+				+ "," + pNo;
 	}
 }

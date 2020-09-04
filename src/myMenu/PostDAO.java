@@ -19,15 +19,15 @@ public class PostDAO {
 			ps.setString(3, dto.getpCDate());
 			ps.setString(4, dto.getuID());
 			ps.executeUpdate();
-			System.out.println("INSERT done.");
+			System.out.println("[Post] INSERT completed.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("INSERT failed.");
+			System.out.println("---[Post] INSERT failed.");
 		}
 	}
 
 	public ArrayList<String> read() {
-		PostDTO dto = null;
+		PostDTO dto = new PostDTO();
 		ArrayList<String> postList = new ArrayList<String>();
 
 		try {
@@ -36,8 +36,6 @@ public class PostDAO {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				dto = new PostDTO();
-
 				int pNo = rs.getInt("pNo");
 				String pImg = rs.getString("pImg");
 				String pCon = rs.getString("pCon");
@@ -55,10 +53,10 @@ public class PostDAO {
 				postList.add(String.valueOf(dto));
 			}
 
-			System.out.println("SELECT done.");
+			System.out.println("[Post] SELECT completed.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("SELECT failed.");
+			System.out.println("---[Post] SELECT failed.");
 		}
 
 		return postList;
@@ -74,10 +72,10 @@ public class PostDAO {
 			ps.setString(4, dto.getuID());
 			ps.executeUpdate();
 
-			System.out.println("UPDATE done.");
+			System.out.println("[Post] UPDATE completed.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("UPDATE failed.");
+			System.out.println("---[Post] UPDATE failed.");
 		}
 	}
 
@@ -100,10 +98,10 @@ public class PostDAO {
 			ps2.setInt(2, dto.getpNo());
 			ps2.executeUpdate();
 
-			System.out.println("UPDATE pLike done.");
+			System.out.println("[Post] UPDATE pLike completed.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("UPDATE failed.");
+			System.out.println("---[Post] UPDATE pLike failed.");
 		}
 		return pLike + 1;
 	}
@@ -117,10 +115,10 @@ public class PostDAO {
 
 			ps.executeUpdate();
 
-			System.out.println("DELETE done.");
+			System.out.println("[Post] DELETE completed.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("DELETE failed.");
+			System.out.println("---[Post] DELETE failed.");
 		}
 	}
 

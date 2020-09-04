@@ -13,64 +13,53 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class Board extends JFrame {
+public class Board extends JPanel {
 	BoardRUD rud = new BoardRUD();
-
-	public static void main(String[] args) {
-		new Board();
-	}
+	int height;
 
 	public Board() {
-		JScrollPane scroll = new JScrollPane();
-		scroll.setHorizontalScrollBar(null);
-
-		JPanel pnBg = new JPanel();
-		pnBg.setLayout(new BoxLayout(pnBg, BoxLayout.Y_AXIS));
-
 		ArrayList<String[]> postList = rud.readPost();
 
 		if (!postList.isEmpty()) {
 			for (int i = 0; i < postList.size(); i++) { // pNo, uID, uCDate, pImg, pCon, pLike (String)
-				pnBg.add(addPanel(postList.get(i)[0], postList.get(i)[6], postList.get(i)[3], postList.get(i)[1],
+				add(addPanel(postList.get(i)[0], postList.get(i)[6], postList.get(i)[3], postList.get(i)[1],
 						postList.get(i)[2], postList.get(i)[5])); // getName()하면 pNo 리턴
 			}
 		} else {
-			pnBg.add(new JLabel("No Post!"));
+			add(new JLabel("No Post!"));
 		}
 
-		scroll.getViewport().add(pnBg);
-		add(scroll);
+		height = postList.size() * 700;
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-		setSize(540, 960);
+		setSize(505, 700);
+		setPreferredSize(new Dimension(505, 700));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setVisible(true);
 	}
 
 	public JPanel addPanel(String pNo, String uID, String uCDate, String pImg, String pCon, String pLike) {
+		final String IC_LOC = "E:/2020/java/workspace/instagram/icon/"; // 내가 쓸 아이콘 이미지 위치
 		JButton btnDoUpdate = new JButton(); // (편집 선택시 나타나는) 수정 진행 버튼
 		JButton btnNoUpdate = new JButton(); // (편집 선택시 나타나는) 수정 취소 버튼
-		ImageIcon icUnheart = new ImageIcon("E:/img/icUnheart.png");
-		ImageIcon icHeart = new ImageIcon("E:/img/icHeart.png");
+		ImageIcon icUnheart = new ImageIcon(IC_LOC + "icUnheart.png");
+		ImageIcon icHeart = new ImageIcon(IC_LOC + "icHeart.png");
 
 		JPanel pnPost = new JPanel(); // 바탕이 될 패널
 		pnPost.setBackground(Color.white);
 		pnPost.setLayout(null);
-		pnPost.setSize(500, 800);
-		pnPost.setPreferredSize(new Dimension(500, 800));
+		pnPost.setSize(500, 700);
+		pnPost.setPreferredSize(new Dimension(500, 700));
 		pnPost.setName(pNo);
 
 		Font font = new Font("맑은고딕", 0, 12);
 		Font font2 = new Font("맑은고딕", 0, 9);
 
-		JLabel lbProfile = new JLabel(new ImageIcon("E:/img/icPerson.png")); // 유저프로필 ★ 유저가 지정할 수 있게 할까?
+		JLabel lbProfile = new JLabel(new ImageIcon(IC_LOC + "icPerson.png")); // 유저프로필 ★ 유저가 지정할 수 있게 할까?
 		lbProfile.setBounds(10, 10, 48, 48);
 
 		JLabel lbCDate = new JLabel(); // 게시글 생성일 ★나중에 수정일 업데이트 되면?
@@ -89,21 +78,19 @@ public class Board extends JFrame {
 
 		JTextArea taCon = new JTextArea(); // 게시글 내용
 		taCon.setText(pCon);
-		taCon.setBounds(10, 550, 480, 80);
+		taCon.setBounds(10, 610, 480, 80);
 		taCon.setFont(font);
 		taCon.setFocusable(false);
 
-		btnDoUpdate.setBounds(355, 640, 60, 30); // 수정 진행 버튼
+		btnDoUpdate.setBounds(355, 700, 60, 30); // 수정 진행 버튼
 		btnDoUpdate.setFont(font2);
 		btnDoUpdate.setText("Done");
 		btnDoUpdate.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Date date = new Date();
-
-				SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
-				String pUDate = String.valueOf(format.format(date));
+				SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd HHmmss");
+				String pUDate = String.valueOf(format.format(new Date()));
 				String uID = "aaaa"; // 나중에 받아오기
 
 				rud.updatePost(pNo, taCon.getText(), pUDate, uID);
@@ -116,9 +103,9 @@ public class Board extends JFrame {
 			}
 		});
 
-		btnNoUpdate.setBounds(420, 640, 65, 30); // 수정 취소 버튼
+		btnNoUpdate.setBounds(420, 700, 65, 30); // 수정 취소 버튼
 		btnNoUpdate.setFont(font2);
-		btnNoUpdate.setText("cancle");
+		btnNoUpdate.setText("cancel");
 		btnNoUpdate.addActionListener(new ActionListener() {
 
 			@Override
@@ -134,7 +121,7 @@ public class Board extends JFrame {
 		});
 
 		JButton btnUpdate = new JButton(); // 수정 여부 버튼
-		btnUpdate.setIcon(new ImageIcon("E:/img/icUpdate.png"));
+		btnUpdate.setIcon(new ImageIcon(IC_LOC + "icUpdate.png"));
 		btnUpdate.setBounds(405, 10, 40, 40);
 		btnUpdate.setName(pNo);
 		btnUpdate.addActionListener(new ActionListener() {
@@ -148,7 +135,7 @@ public class Board extends JFrame {
 					pnPost.add(btnNoUpdate);
 					taCon.setFocusable(true);
 					taCon.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-					pnPost.repaint(); // 버튼 추가했으니 새고ㄱ
+					pnPost.repaint(); // 버튼 추가했으니 새고
 				} else if (result == JOptionPane.NO_OPTION) { // 수정 취소
 					JOptionPane.showMessageDialog(pnPost, "cancle");
 				}
@@ -156,7 +143,7 @@ public class Board extends JFrame {
 		});
 
 		JButton btnDelete = new JButton(); // 삭제 여부 버튼
-		btnDelete.setIcon(new ImageIcon("E:/img/icDelete.png"));
+		btnDelete.setIcon(new ImageIcon(IC_LOC + "icDelete.png"));
 		btnDelete.setBounds(450, 10, 40, 40);
 		btnDelete.setName(pNo);
 		btnDelete.addActionListener(new ActionListener() {
@@ -178,11 +165,11 @@ public class Board extends JFrame {
 
 		JLabel lbLike = new JLabel();
 		lbLike.setText("Like " + pLike);
-		lbLike.setBounds(10, 640, 48, 48);
+		lbLike.setBounds(125, 550, 48, 48);
 
 		JButton btnLike = new JButton();
 		btnLike.setIcon(icUnheart);
-		btnLike.setBounds(70, 640, 48, 48);
+		btnLike.setBounds(10, 550, 48, 48);
 		btnLike.setText(null);
 		btnLike.addActionListener(new ActionListener() {
 
@@ -198,20 +185,22 @@ public class Board extends JFrame {
 		});
 
 		JButton btnComment = new JButton();
-		btnComment.setIcon(new ImageIcon("E:/img/icComment.png"));
-		btnComment.setBounds(125, 640, 48, 48);
+		btnComment.setIcon(new ImageIcon(IC_LOC + "icComment.png"));
+		btnComment.setBounds(65, 550, 48, 48);
 		btnComment.setFont(font);
 		btnComment.setText(null);
 		btnComment.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String cCon = JOptionPane.showInputDialog(pnPost, "댓글 쓰기");
+				Comment comment = new Comment(pNo);
+				comment.setVisible(true);
+
 			}
 		});
 
-		JLabel lbComment = new JLabel();
-		lbComment.setBounds(10, 700, 480, 70);
+		JLabel lbComment = new JLabel("Comment 0");
+		lbComment.setBounds(410, 540, 100, 70);
 		lbComment.setFont(font);
 
 		pnPost.add(lbProfile);

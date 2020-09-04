@@ -20,7 +20,7 @@ public class BoardRUD {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("execute READ failed!!");
+			System.out.println("[Post] execute READ failed!!");
 		}
 
 		return postList;
@@ -35,7 +35,7 @@ public class BoardRUD {
 
 			dao.update(dto);
 		} catch (Exception e) {
-			System.out.println("execute UPDATE failed!!");
+			System.out.println("[Post] execute UPDATE failed!!");
 		}
 	}
 	
@@ -48,7 +48,7 @@ public class BoardRUD {
 			pLike = dao.updateLike(dto);
 			
 		} catch (Exception e) {
-			System.out.println("execute UPDATE failed!!");
+			System.out.println("[Post] execute UPDATE failed!!");
 		}
 		return pLike;
 	}
@@ -60,7 +60,7 @@ public class BoardRUD {
 
 			dao.delete(dto);
 		} catch (Exception e) {
-			System.out.println("execute DELETE failed!!");
+			System.out.println("[Post] execute DELETE failed!!");
 		}
 	}
 }
