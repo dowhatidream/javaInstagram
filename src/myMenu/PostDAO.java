@@ -79,7 +79,7 @@ public class PostDAO {
 		}
 	}
 
-	public int updateLike(PostDTO dto) {
+	public int updateLike(PostDTO dto, int value) {
 		int pLike = 0;
 		try {
 			String sql = "SELECT pLike FROM post WHERE pNo=? ";
@@ -94,7 +94,7 @@ public class PostDAO {
 
 			String sql2 = "UPDATE post SET pLike=? WHERE pNo=? ";
 			PreparedStatement ps2 = con.prepareStatement(sql2);
-			ps2.setInt(1, pLike + 1);
+			ps2.setInt(1, pLike + value);
 			ps2.setInt(2, dto.getpNo());
 			ps2.executeUpdate();
 
@@ -103,7 +103,7 @@ public class PostDAO {
 			e.printStackTrace();
 			System.out.println("---[Post] UPDATE pLike failed.");
 		}
-		return pLike + 1;
+		return (pLike + value);
 	}
 
 	public void delete(PostDTO dto) {

@@ -40,19 +40,19 @@ public class Comment extends JFrame {
 			pnBg.add(new JLabel("No Comment!"));
 		}
 
-		JPanel pnCom = new JPanel();
-		pnCom.setLayout(null);
-		pnCom.setSize(540, 70);
-		pnCom.setPreferredSize(new Dimension(540, 70));
+		JPanel pnInsert = new JPanel();
+		pnInsert.setLayout(null);
+		pnInsert.setSize(540, 70);
+		pnInsert.setPreferredSize(new Dimension(540, 70));
 
 		JTextArea txCon = new JTextArea();
 		txCon.setBounds(10, 10, 420, 50);
 
-		JButton btnCreate = new JButton("완료");
+		JButton btnCreate = new JButton("등록");
 		btnCreate.setBounds(440, 10, 60, 50);
 		btnCreate.setFont(new Font("맑은고딕", Font.PLAIN, 12));
 		btnCreate.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd HHmmss");
@@ -63,28 +63,23 @@ public class Comment extends JFrame {
 				if (!cCon.matches("")) {
 					CommentRUD rud = new CommentRUD();
 					rud.createComment(cCon, cCDate, uID, pNo);
-					pnBg.revalidate();
 					pnBg.repaint();
-					pnCom.repaint();
-					
+					scroll.repaint();
+
 					txCon.setText(null);
+				} else {
+					JOptionPane.showMessageDialog(pnInsert, "No Content!");
 				}
-				else {
-					JOptionPane.showMessageDialog(pnCom, "No Content!");
-				}
-				
 			}
 		});
 
-		pnCom.add(btnCreate);
-		pnCom.add(txCon);
+		pnInsert.add(btnCreate);
+		pnInsert.add(txCon);
 
-		pnBg.add(pnCom); // 댓글모음패널 위에 댓글창 올리기
+		pnBg.add(pnInsert); // 댓글모음패널 위에 댓글창 올리기
 		scroll.getViewport().add(pnBg); // scroll 위에 댓글모음패널 올리기
 		add(scroll); // 프레임 위에 scroll 올리기
 
-//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setLocationRelativeTo(null);
 		setSize(540, 560);
 		setVisible(true);
 	}

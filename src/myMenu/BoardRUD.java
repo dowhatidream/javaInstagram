@@ -38,15 +38,13 @@ public class BoardRUD {
 			System.out.println("[Post] execute UPDATE failed!!");
 		}
 	}
-	
-	public int updatePost(String pNo) {
+
+	public int updatePost(String pNo, int value) {
 		int pLike = 0;
-		
 		try {
 			dto.setpNo(Integer.valueOf(pNo));
 
-			pLike = dao.updateLike(dto);
-			
+			pLike = dao.updateLike(dto, value);
 		} catch (Exception e) {
 			System.out.println("[Post] execute UPDATE failed!!");
 		}

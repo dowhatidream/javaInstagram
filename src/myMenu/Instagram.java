@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+// 새고하는 게 곧 생성 다시 하는 것..?
+
 public class Instagram extends JFrame {
 
 	public static void main(String[] args) {
@@ -28,21 +30,41 @@ public class Instagram extends JFrame {
 		scroll.setBounds(0, 70, 525, 750);
 		scroll.setBorder(null);
 
+		Board board = new Board();
+		board.setVisible(true);
+		board.setPreferredSize(new Dimension(505, board.height));
+		pnBg.add(board);
+
 		JButton btnHome = new JButton("Home");
 		btnHome.setBounds(10, 840, 160, 70);
 		btnHome.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				pnBg.removeAll();
+
 				Board board = new Board();
-				board.setVisible(true);				
-				board.setPreferredSize(new Dimension(505, board.height)); // 짜부되지 않으려면 얘가 길어야 하네...ㅋ
 				pnBg.add(board);
+				pnBg.repaint();
+				board.setVisible(true);
+				board.setPreferredSize(new Dimension(505, board.height)); // 짜부되지 않으려면 얘가 길어야 하네...ㅋ
 			}
 		});
 
 		JButton btnPost = new JButton("Posting");
 		btnPost.setBounds(180, 840, 160, 70);
+		btnPost.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Post post = new Post();
+				pnBg.removeAll();
+				pnBg.add(post);
+				pnBg.repaint();
+				post.setVisible(true);
+				post.setPreferredSize(new Dimension(540, 750)); // 짜부되지 않으려면 얘가 길어야 하네...ㅋ
+			}
+		});
 
 		JButton btnMe = new JButton("Me");
 		btnMe.setBounds(350, 840, 160, 70);

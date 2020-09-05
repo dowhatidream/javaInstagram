@@ -1,6 +1,7 @@
 package myMenu;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,13 +13,12 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class Post extends JFrame {
+public class Post extends JPanel {
 	final static String IMG_LOC = "E:/2020/java/workspace/instagram/img/"; // 유저가 저장하는 이미지
 	boolean fileExist; // 사진이 선택되었는지 여부
 	File selectF;
@@ -26,29 +26,25 @@ public class Post extends JFrame {
 	String selectFLoc;
 	BufferedImage img;
 
-	public static void main(String[] args) {
-		new Post();
-	}
-
 	public Post() {
 		JPanel pnImg = new JPanel();
 		pnImg.setBackground(new Color(255, 250, 205));
-		pnImg.setBounds(10, 10, 504, 463);
-
-		JPanel pnCon = new JPanel();
-		pnCon.setBounds(0, 483, 524, 428);
-
-		JTextArea taCon = new JTextArea();
-		taCon.setFont(new Font("맑은고딕", Font.PLAIN, 15));
-		taCon.setBounds(10, 10, 504, 292);
+		pnImg.setBounds(0, 0, 504, 480);
 
 		JLabel lbShowImg = new JLabel();
 		lbShowImg.setBackground(new Color(255, 250, 205));
-		lbShowImg.setBounds(10, 20, 502, 328);
+		lbShowImg.setBounds(0, 0, 500, 476);
+
+		JPanel pnCon = new JPanel();
+		pnCon.setBounds(0, 490, 504, 250);
+
+		JTextArea taCon = new JTextArea();
+		taCon.setFont(new Font("맑은고딕", Font.PLAIN, 15));
+		taCon.setBounds(0, 0, 504, 140);
 
 		JButton btnImg = new JButton("사진 선택");
-		btnImg.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
-		btnImg.setBounds(10, 312, 504, 50);
+		btnImg.setFont(new Font("맑은 고딕", Font.PLAIN, 17));
+		btnImg.setBounds(0, 150, 504, 45);
 
 		JFileChooser fc = new JFileChooser();
 
@@ -73,8 +69,8 @@ public class Post extends JFrame {
 		});
 
 		JButton btnAdd = new JButton("작성 완료");
-		btnAdd.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
-		btnAdd.setBounds(10, 372, 504, 50);
+		btnAdd.setFont(new Font("맑은 고딕", Font.PLAIN, 17));
+		btnAdd.setBounds(0, 202, 504, 45);
 		btnAdd.addActionListener(new ActionListener() {
 
 			@Override
@@ -119,7 +115,7 @@ public class Post extends JFrame {
 					selectFName = null;
 					selectFLoc = null;
 					fileExist = false;
-					
+
 					JOptionPane.showMessageDialog(pnCon, "Completed.");
 				} else {
 					JOptionPane.showMessageDialog(pnCon, "Select a image!");
@@ -133,13 +129,12 @@ public class Post extends JFrame {
 		pnCon.add(btnImg);
 		pnCon.add(btnAdd);
 
-		getContentPane().setLayout(null);
-		getContentPane().add(pnCon);
-		getContentPane().add(pnImg);
+		setLayout(null);
+		add(pnImg);
+		add(pnCon);
 
-		setSize(540, 960);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
+		setSize(506, 740);
+		setPreferredSize(new Dimension(506, 740));
 		setVisible(true);
 	}
 }

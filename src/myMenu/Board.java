@@ -23,21 +23,27 @@ public class Board extends JPanel {
 	int height;
 
 	public Board() {
-		ArrayList<String[]> postList = rud.readPost();
+		try {
+			ArrayList<String[]> postList = rud.readPost();
 
-		if (!postList.isEmpty()) {
-			for (int i = 0; i < postList.size(); i++) { // pNo, uID, uCDate, pImg, pCon, pLike (String)
-				add(addPanel(postList.get(i)[0], postList.get(i)[6], postList.get(i)[3], postList.get(i)[1],
-						postList.get(i)[2], postList.get(i)[5])); // getName()하면 pNo 리턴
+			if (!postList.isEmpty()) {
+				for (int i = 0; i < postList.size(); i++) { // pNo, uID, uCDate, pImg, pCon, pLike (String)
+					add(addPanel(postList.get(i)[0], postList.get(i)[6], postList.get(i)[3], postList.get(i)[1],
+							postList.get(i)[2], postList.get(i)[5])); // getName()하면 pNo 리턴
+				}
+			} else {
+				add(new JLabel("No Post!"));
 			}
-		} else {
+
+			height = postList.size() * 730;
+
+		} catch (Exception e) {
 			add(new JLabel("No Post!"));
+			e.printStackTrace();
 		}
 
-		height = postList.size() * 700;
-
-		setSize(505, 700);
-		setPreferredSize(new Dimension(505, 700));
+		setSize(505, 730);
+		setPreferredSize(new Dimension(505, 730));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setVisible(true);
 	}
@@ -52,8 +58,8 @@ public class Board extends JPanel {
 		JPanel pnPost = new JPanel(); // 바탕이 될 패널
 		pnPost.setBackground(Color.white);
 		pnPost.setLayout(null);
-		pnPost.setSize(500, 700);
-		pnPost.setPreferredSize(new Dimension(500, 700));
+		pnPost.setSize(500, 730);
+		pnPost.setPreferredSize(new Dimension(500, 730));
 		pnPost.setName(pNo);
 
 		Font font = new Font("맑은고딕", 0, 12);
@@ -78,11 +84,11 @@ public class Board extends JPanel {
 
 		JTextArea taCon = new JTextArea(); // 게시글 내용
 		taCon.setText(pCon);
-		taCon.setBounds(10, 610, 480, 80);
+		taCon.setBounds(10, 610, 480, 70);
 		taCon.setFont(font);
 		taCon.setFocusable(false);
 
-		btnDoUpdate.setBounds(355, 700, 60, 30); // 수정 진행 버튼
+		btnDoUpdate.setBounds(355, 690, 60, 30); // 수정 진행 버튼
 		btnDoUpdate.setFont(font2);
 		btnDoUpdate.setText("Done");
 		btnDoUpdate.addActionListener(new ActionListener() {
@@ -103,7 +109,7 @@ public class Board extends JPanel {
 			}
 		});
 
-		btnNoUpdate.setBounds(420, 700, 65, 30); // 수정 취소 버튼
+		btnNoUpdate.setBounds(420, 690, 65, 30); // 수정 취소 버튼
 		btnNoUpdate.setFont(font2);
 		btnNoUpdate.setText("cancel");
 		btnNoUpdate.addActionListener(new ActionListener() {
@@ -177,7 +183,12 @@ public class Board extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (btnLike.getIcon() == icUnheart) {
 					btnLike.setIcon(icHeart);
-					int pLike = rud.updatePost(pNo);
+					int pLike = rud.updatePost(pNo, 1);
+					lbLike.setText("Like " + String.valueOf(pLike));
+					pnPost.repaint();
+				} else if (btnLike.getIcon() == icHeart) {
+					btnLike.setIcon(icUnheart);
+					int pLike = rud.updatePost(pNo, -1);
 					lbLike.setText("Like " + String.valueOf(pLike));
 					pnPost.repaint();
 				}
