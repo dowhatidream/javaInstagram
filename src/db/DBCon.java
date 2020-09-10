@@ -1,13 +1,12 @@
-package myMenu;
+package db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DBCon {
 
-	public static Connection getConnection() {
+	public Connection getConnection() {
 		try {
-//			String url = "jdbc:mysql://localhost:3306/instagram";
 			String url = "jdbc:mysql://localhost:3306/instagram?serverTimezone=Asia/Seoul&useSSL=false";
 			String user = "root";
 			String password = "1234";

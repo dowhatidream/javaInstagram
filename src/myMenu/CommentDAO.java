@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import db.DBCon;
+
 public class CommentDAO {
 	DBCon db = new DBCon();
 	Connection con = db.getConnection();
@@ -20,7 +22,7 @@ public class CommentDAO {
 			ps.setString(3, dto.getuID());
 			ps.setInt(4, dto.getpNo());
 
-			ps.executeUpdate();
+			ps.executeUpdate(); // ????
 
 			System.out.println("[Comment] INSERT completed.");
 		} catch (Exception e) {
@@ -29,9 +31,8 @@ public class CommentDAO {
 		}
 	}
 
-	public ArrayList<String> read(int pNo) {
-		CommentDTO dto = new CommentDTO();
-		ArrayList<String> commentList = new ArrayList<String>();
+	public ArrayList<CommentDTO> read(int pNo) {
+		ArrayList<CommentDTO> commentList = new ArrayList<CommentDTO>();
 
 		try {
 			String sql = "SELECT * FROM comment WHERE pNo=" + pNo + " ";
@@ -39,6 +40,8 @@ public class CommentDAO {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) { // pNo은 게시글에서 버튼 누를때 패널 name으로 받아와야겠다!
+				CommentDTO dto = new CommentDTO();
+				
 				int cNo = rs.getInt("cNo");
 				String cCon = rs.getString("cCon");
 				String cCDate = rs.getString("cCDate");
@@ -51,7 +54,7 @@ public class CommentDAO {
 				dto.setcUDate(cUDate);
 				dto.setuID(uID);
 
-				commentList.add(String.valueOf(dto));
+				commentList.add(dto);
 			}
 			
 			System.out.println("[Comment] SELECT completed.");
@@ -62,12 +65,36 @@ public class CommentDAO {
 
 		return commentList;
 	}
+	
+	public void update(CommentDTO dto) {
+		try {
+			String sql = "UPDATE comment SET cCon=?, cUDate=? WHERE cNo=? ";
+			PreparedStatement ps = con.prepareStatement(sql);
 
-	public void update() {
+			ps.setString(1, dto.getcCon());
+			ps.setString(2, dto.getcUDate());
+			ps.setInt(3, dto.getcNo());
+			ps.executeUpdate();
 
+			System.out.println("[Comment] UPDATE completed.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("---[Comment] UPDATE failed.");
+		}
 	}
 
-	public void delete() {
+	public void delete(CommentDTO dto) {
+		try {
+			String sql = "DELETE FROM comment WHERE cNo=? ";
+			PreparedStatement ps = con.prepareStatement(sql);
 
+			ps.setInt(1, dto.getcNo());
+			ps.executeUpdate();
+
+			System.out.println("[Comment] DELETE completed.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("---[Comment] DELETE failed.");
+		}
 	}
 }

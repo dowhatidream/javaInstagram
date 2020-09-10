@@ -6,20 +6,20 @@ public class PostDTO {
 	private String pCon;
 	private String pCDate;
 	private String pUDate;
-	private int pLike;
+	private int pHeart;
 	private String uID;
 	
 	public PostDTO() {
 		super();
 	}
-	public PostDTO(int pNo, String pImg, String pCon, String pCDate, String pUDate, int pLike, String uID) {
+	public PostDTO(int pNo, String pImg, String pCon, String pCDate, String pUDate, int pHeart, String uID) {
 		super();
 		this.pNo = pNo;
 		this.pImg = pImg;
 		this.pCon = pCon;
 		this.pCDate = pCDate;
 		this.pUDate = pUDate;
-		this.pLike = pLike;
+		this.pHeart = pHeart;
 		this.uID = uID;
 	}
 	public int getpNo() {
@@ -52,11 +52,11 @@ public class PostDTO {
 	public void setpUDate(String pUDate) {
 		this.pUDate = pUDate;
 	}
-	public int getpLike() {
-		return pLike;
+	public int getpHeart() {
+		return pHeart;
 	}
-	public void setpLike(int pLike) {
-		this.pLike = pLike;
+	public void setpHeart(int pHeart) {
+		this.pHeart = pHeart;
 	}
 	public String getuID() {
 		return uID;
@@ -67,6 +67,6 @@ public class PostDTO {
 	@Override
 	public String toString() {
 		return pNo + "," + pImg + "," + pCon + "," + pCDate + "," + pUDate
-				+ "," + pLike + "," + uID;
+				+ "," + pHeart + "," + uID;
 	}
 }

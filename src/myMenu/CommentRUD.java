@@ -1,12 +1,10 @@
 package myMenu;
 
-import java.util.ArrayList;
-
 public class CommentRUD {
 	CommentDTO dto = new CommentDTO();
 	CommentDAO dao = new CommentDAO();
 	
-	public void createComment(String cCon, String cCDate, String uID, String pNo) {
+	public void createComment(String cCon, String cCDate, String uID, int pNo) {
 		try {
 			
 			dto.setcCon(cCon);
@@ -14,30 +12,32 @@ public class CommentRUD {
 			dto.setuID(uID);
 			dto.setpNo(Integer.valueOf(pNo));
 			
-			dao.create(dto);
+			dao.create(dto); // ?????
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("[Comment] execute CREATE failed!!");
 		}
 	}
 	
-	public ArrayList<String[]> readComment(String pNo) {
-		ArrayList<String> comment = new ArrayList<String>(); // 게시글 한 개가 한 행(split X)
-		ArrayList<String[]> commentList = new ArrayList<String[]>(); // 게시글 하나를 잘라서 2차원 배열로
-
+	public void updatePost(int cNo, String cCon, String cUDate) {
 		try {
-			comment = dao.read(Integer.valueOf(pNo));
+			dto.setcCon(cCon);
+			dto.setcUDate(cUDate);
+			dto.setcNo(cNo);
 
-			for (int i = 0; i < comment.size(); i++) {
-				String[] items = comment.get(i).split(",");
-				commentList.add(items);
-			}
-
+			dao.update(dto);
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("[Comment] execute READ failed!!");
+			System.out.println("[Comment] execute UPDATE failed!!");
 		}
+	}
 
-		return commentList;
+	public void deletePost(int cNo) {
+		try {
+			dto.setcNo(cNo);
+
+			dao.delete(dto);
+		} catch (Exception e) {
+			System.out.println("[Comment] execute DELETE failed!!");
+		}
 	}
 }

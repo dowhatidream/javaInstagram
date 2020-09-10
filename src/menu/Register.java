@@ -13,8 +13,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import db.UserDAO;
-import db.UserDTO;
+import myMenu.UserDAO;
+import myMenu.UserDTO;
 
 import javax.swing.JPasswordField;
 

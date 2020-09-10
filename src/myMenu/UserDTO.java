@@ -1,4 +1,4 @@
-package db;
+package myMenu;
 
 public class UserDTO {
 	private String uID;

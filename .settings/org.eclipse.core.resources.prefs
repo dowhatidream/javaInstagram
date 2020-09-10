@@ -1,5 +1,5 @@
 eclipse.preferences.version=1
-encoding//src/db/UserDAO.java=UTF-8
-encoding//src/db/UserDTO.java=UTF-8
-encoding//src/myMenu/Post.java=UTF-8
 encoding//src/myMenu/PostDAO.java=UTF-8
+encoding//src/myMenu/UserDAO.java=UTF-8
+encoding//src/myMenu/UserDTO.java=UTF-8
+encoding//src/panel/PostUI.java=UTF-8

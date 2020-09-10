@@ -1,10 +1,10 @@
-package db;
+package myMenu;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
-import myMenu.DBCon;
+import db.DBCon;
 
 public class UserDAO {
 
