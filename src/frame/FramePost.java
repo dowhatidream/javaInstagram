@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -15,28 +16,44 @@ import panel.MyPostUI;
 import panel.PostUI;
 import panel.ProfileUI;
 
-// »õ°íÇÏ´Â °Ô °ğ »ı¼º ´Ù½Ã ÇÏ´Â °Í..?
+// ìƒˆê³ í•˜ëŠ” ê²Œ ê³§ ìƒì„± ë‹¤ì‹œ í•˜ëŠ” ê²ƒ..?
 
 public class FramePost extends JFrame {
 
 	String loginID = "aaaa";
+	JPanel pnBg;
+	AllPostUI allPost;
+	LogoUI pnLogo;
+	LogoUI pnLogo2;
+	JScrollPane scroll;
+	static public boolean result;
 
 	public static void main(String[] args) {
 		new FramePost();
 	}
 
 	public FramePost() {
-		LogoUI pnLogo = new LogoUI("INSTAGRAM");
-		LogoUI pnLogo2 = new LogoUI(loginID);
+		pnLogo = new LogoUI("INSTAGRAM");
+		pnLogo2 = new LogoUI(loginID);
 
-		JPanel pnBg = new JPanel();
-		JScrollPane scroll = new JScrollPane(pnBg);
+		pnBg = new JPanel();
+		scroll = new JScrollPane(pnBg);
 		scroll.setHorizontalScrollBar(null);
 		scroll.setBounds(0, 70, 525, 750);
 		scroll.setBorder(null);
+		scroll.getVerticalScrollBar().setUnitIncrement(20);
 
-		AllPostUI allPost = new AllPostUI(); // ÁøÀÔ ½Ã ±âº»È­¸é ¼¼ÆÃ
+		allPost = new AllPostUI(); // ì§„ì… ì‹œ ê¸°ë³¸í™”ë©´ ì„¸íŒ…
 		allPost.setPreferredSize(new Dimension(505, allPost.height));
+
+		if (allPost.height == 0) {
+			pnBg.add(new JLabel("hey no post"));
+		}
+
+		if (result) {
+			screen(1);
+			System.out.println(result);
+		}
 
 		JButton btnHome = new JButton("Home");
 		btnHome.setBounds(10, 840, 160, 70);
@@ -44,18 +61,7 @@ public class FramePost extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				pnBg.removeAll();
-
-				pnLogo2.setVisible(false);
-				pnLogo.setVisible(true);
-				add(pnLogo);
-
-				AllPostUI allPost = new AllPostUI();
-				scroll.setBounds(0, 70, 525, 750);
-				pnBg.add(allPost);
-				pnBg.repaint();
-				allPost.setVisible(true);
-				allPost.setPreferredSize(new Dimension(505, allPost.height)); // Â¥ºÎµÇÁö ¾ÊÀ¸·Á¸é ¾ê°¡ ±æ¾î¾ß ÇÏ³×...¤»
+				screen(1);
 			}
 		});
 
@@ -65,18 +71,7 @@ public class FramePost extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				pnBg.removeAll();
-
-				pnLogo.setVisible(true);
-				pnLogo2.setVisible(false);
-				add(pnLogo);
-				
-				PostUI post = new PostUI();
-				scroll.setBounds(0, 70, 525, 750);
-				pnBg.add(post);
-				pnBg.repaint();
-				post.setVisible(true);
-				post.setPreferredSize(new Dimension(540, 750)); // Â¥ºÎµÇÁö ¾ÊÀ¸·Á¸é ¾ê°¡ ±æ¾î¾ß ÇÏ³×...¤»
+				screen(2);
 			}
 		});
 
@@ -86,23 +81,7 @@ public class FramePost extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				pnBg.removeAll();
-				scroll.setBounds(0, 210, 525, 620);
-
-				pnLogo.setVisible(false);
-				pnLogo2.setVisible(true);
-				add(pnLogo2);
-
-				ProfileUI pnProfile = new ProfileUI();
-				pnProfile.setBounds(5, 70, 505, 130);
-				add(pnProfile);
-
-				MyPostUI myPost = new MyPostUI();
-				pnBg.add(myPost);
-				pnBg.repaint();
-
-				myPost.setVisible(true);
-				myPost.setPreferredSize(new Dimension(540, myPost.height)); // Â¥ºÎµÇÁö ¾ÊÀ¸·Á¸é ¾ê°¡ ±æ¾î¾ß ÇÏ³×...¤»
+				screen(3);
 			}
 		});
 
@@ -120,4 +99,61 @@ public class FramePost extends JFrame {
 		setSize(540, 960);
 		setVisible(true);
 	}
+
+	public void screen(int status) {
+		pnBg.removeAll();
+
+		if (status == 1) {
+			System.out.println("ë‚œ 1");
+			pnLogo2.setVisible(false);
+			pnLogo.setVisible(true);
+			add(pnLogo);
+
+			AllPostUI allPost = new AllPostUI();
+			allPost.setPreferredSize(new Dimension(505, allPost.height)); // ì§œë¶€ë˜ì§€ ì•Šìœ¼ë ¤ë©´ ì–˜ê°€ ê¸¸ì–´ì•¼ í•˜ë„¤...ã…‹
+			scroll.setBounds(0, 70, 525, 750);
+			pnBg.add(allPost);
+			pnBg.repaint();
+
+		}
+		if (status == 2) {
+			System.out.println("ë‚œ 2");
+			pnLogo.setVisible(true);
+			pnLogo2.setVisible(false);
+			add(pnLogo);
+
+			PostUI post = new PostUI();
+			post.setPreferredSize(new Dimension(540, 750)); // ì§œë¶€ë˜ì§€ ì•Šìœ¼ë ¤ë©´ ì–˜ê°€ ê¸¸ì–´ì•¼ í•˜ë„¤...ã…‹
+			scroll.setBounds(0, 70, 525, 750);
+			pnBg.add(post);
+			pnBg.repaint();
+
+		}
+		if (status == 3) {
+			System.out.println("ë‚œ 3");
+			scroll.setBounds(0, 210, 525, 620);
+
+			pnLogo.setVisible(false);
+			pnLogo2.setVisible(true);
+			add(pnLogo2);
+
+			ProfileUI pnProfile = new ProfileUI();
+			pnProfile.setBounds(5, 70, 505, 130);
+			add(pnProfile);
+
+			MyPostUI myPost = new MyPostUI();
+			myPost.setPreferredSize(new Dimension(540, myPost.height)); // ì§œë¶€ë˜ì§€ ì•Šìœ¼ë ¤ë©´ ì–˜ê°€ ê¸¸ì–´ì•¼ í•˜ë„¤...ã…‹
+			pnBg.add(myPost);
+			pnBg.repaint();
+		}
+	}
+
+//	public void come() {
+//		System.out.println("ë°›ì•˜ì–´. í™”ë©´ ë°”ê¿€ê²Œ!");
+//
+//		screen(1);
+//
+//		pnBg.removeAll();
+//		pnBg.add(allPost);
+//	}
 }

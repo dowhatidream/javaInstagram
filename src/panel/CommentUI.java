@@ -14,23 +14,22 @@ import javax.swing.JTextArea;
 
 import myMenu.CommentRUD;
 
-public class CommentUI extends JPanel{
-	
+public class CommentUI extends JPanel {
+
 	String loginID = "aaaa";
-	
+
 	public CommentUI(int pNo) {
 		JTextArea taCon = new JTextArea();
 		taCon.setBounds(10, 10, 420, 50);
 
-		JButton btnCreate = new JButton("µÓ∑œ");
+		JButton btnCreate = new JButton("post");
 		btnCreate.setBounds(440, 10, 60, 50);
-		btnCreate.setFont(new Font("∏º¿∫∞ÌµÒ", Font.PLAIN, 12));
+		btnCreate.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.PLAIN, 12));
 		btnCreate.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
-				String cCDate = String.valueOf(format.format(new Date()));
+				String cCDate = String.valueOf(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()));
 				String cCon = taCon.getText();
 
 				if (!cCon.matches("")) {

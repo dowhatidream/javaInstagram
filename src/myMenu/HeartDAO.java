@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import db.DBCon;
 
 public class HeartDAO {
-	DBCon db = new DBCon();
-	Connection con = db.getConnection();
+//	DBCon db = new DBCon();
+	Connection con = DBCon.getConnection();
 
 	public void create(HeartDTO dto) {
 		try {
@@ -50,14 +50,14 @@ public class HeartDAO {
 	}
 
 	public boolean read(int pNo, String uID) {
-		boolean result = false; // 좋아요 안 눌렀음
+		boolean result = false;
 		try {
 			String sql = "SELECT * FROM heart WHERE pNo=" + pNo + " AND uID='" + uID + "' ";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 
-			if (rs.next()) { // 값이 있으면
-				result = true; // 이미 눌렀네요
+			if (rs.next()) {
+				result = true;
 			}
 
 			System.out.println("[HEART] SELECT (Heart) completed.");

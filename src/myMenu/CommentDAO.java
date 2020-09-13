@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import db.DBCon;
 
 public class CommentDAO {
-	DBCon db = new DBCon();
-	Connection con = db.getConnection();
+//	DBCon db = new DBCon();
+	Connection con = DBCon.getConnection();
 
 	public void create(CommentDTO dto) {
 		try {
@@ -39,7 +39,7 @@ public class CommentDAO {
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 
-			while (rs.next()) { // pNoÀº °Ô½Ã±Û¿¡¼­ ¹öÆ° ´©¸¦¶§ ÆÐ³Î nameÀ¸·Î ¹Þ¾Æ¿Í¾ß°Ú´Ù!
+			while (rs.next()) { // pNoï¿½ï¿½ ï¿½Ô½Ã±Û¿ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ nameï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿Í¾ß°Ú´ï¿½!
 				CommentDTO dto = new CommentDTO();
 				
 				int cNo = rs.getInt("cNo");

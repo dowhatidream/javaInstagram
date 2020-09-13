@@ -37,7 +37,7 @@ public class MyPostUI extends JPanel {
 			PostDAO pDao = new PostDAO();
 			ArrayList<PostDTO> postList = pDao.read(loginID);
 
-			height = postList.size() * 730; // ½ºÅ©·Ñ Å©±â ¹İÈ¯
+			height = postList.size() * 730;
 
 			if (postList.size() == 0) {
 				add(new JLabel("No Post!"));
@@ -60,45 +60,45 @@ public class MyPostUI extends JPanel {
 	}
 
 	public JPanel addPanel(int pNo, String pImg, String pCon, String uCDate, int pHeart, String uID) {
-		final String IC_LOC = "E:/2020/java/workspace/instagram/icon/"; // ³»°¡ ¾µ ¾ÆÀÌÄÜ ÀÌ¹ÌÁö À§Ä¡
-		JButton btnDoUpdate = new JButton(); // (ÆíÁı ¼±ÅÃ½Ã ³ªÅ¸³ª´Â) ¼öÁ¤ ÁøÇà ¹öÆ°
-		JButton btnNoUpdate = new JButton(); // (ÆíÁı ¼±ÅÃ½Ã ³ªÅ¸³ª´Â) ¼öÁ¤ Ãë¼Ò ¹öÆ°
+		final String IC_LOC = "E:/2020/java/workspace/instagram/icon/";
+		JButton btnDoUpdate = new JButton();
+		JButton btnNoUpdate = new JButton();
 		ImageIcon icUnheart = new ImageIcon(IC_LOC + "icUnheart.png");
 		ImageIcon icHeart = new ImageIcon(IC_LOC + "icHeart.png");
 
-		JPanel pnPost = new JPanel(); // ¹ÙÅÁÀÌ µÉ ÆĞ³Î
+		JPanel pnPost = new JPanel(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ğ³ï¿½
 		pnPost.setBackground(Color.white);
 		pnPost.setLayout(null);
 		pnPost.setSize(500, 730);
 		pnPost.setPreferredSize(new Dimension(500, 730));
 
-		Font font = new Font("¸¼Àº°íµñ", 0, 12);
-		Font font2 = new Font("¸¼Àº°íµñ", 0, 9);
+		Font font = new Font("ë§‘ì€ ê³ ë”•", 0, 12);
+		Font font2 = new Font("ë§‘ì€ ê³ ë”•", 0, 9);
 
-		JLabel lbProfile = new JLabel(new ImageIcon(IC_LOC + "icPerson.png")); // À¯ÀúÇÁ·ÎÇÊ ¡Ú À¯Àú°¡ ÁöÁ¤ÇÒ ¼ö ÀÖ°Ô ÇÒ±î?
+		JLabel lbProfile = new JLabel(new ImageIcon(IC_LOC + "icPerson.png"));
 		lbProfile.setBounds(10, 10, 48, 48);
 
-		JLabel lbCDate = new JLabel(); // °Ô½Ã±Û »ı¼ºÀÏ ¡Ú³ªÁß¿¡ ¼öÁ¤ÀÏ ¾÷µ¥ÀÌÆ® µÇ¸é?
+		JLabel lbCDate = new JLabel();
 		lbCDate.setText(uCDate);
-		lbCDate.setBounds(70, 20, 150, 10);
+		lbCDate.setBounds(70, 20, 150, 12);
 		lbCDate.setFont(font);
 
-		JLabel lbUID = new JLabel(); // À¯Àú¾ÆÀÌµğ
+		JLabel lbUID = new JLabel();
 		lbUID.setText(uID);
 		lbUID.setBounds(70, 30, 100, 20);
 		lbUID.setFont(font);
 
-		JLabel lbImg = new JLabel(); // °Ô½Ã±Û »çÁø
+		JLabel lbImg = new JLabel();
 		lbImg.setIcon(new ImageIcon(pImg));
 		lbImg.setBounds(10, 60, 480, 480);
 
-		JTextArea taCon = new JTextArea(); // °Ô½Ã±Û ³»¿ë
+		JTextArea taCon = new JTextArea();
 		taCon.setText(pCon);
 		taCon.setBounds(10, 610, 480, 70);
 		taCon.setFont(font);
 		taCon.setFocusable(false);
 
-		btnDoUpdate.setBounds(355, 690, 60, 30); // ¼öÁ¤ ÁøÇà ¹öÆ°
+		btnDoUpdate.setBounds(355, 690, 60, 30);
 		btnDoUpdate.setFont(font2);
 		btnDoUpdate.setText("Done");
 		btnDoUpdate.addActionListener(new ActionListener() {
@@ -118,7 +118,7 @@ public class MyPostUI extends JPanel {
 			}
 		});
 
-		btnNoUpdate.setBounds(420, 690, 65, 30); // ¼öÁ¤ Ãë¼Ò ¹öÆ°
+		btnNoUpdate.setBounds(420, 690, 65, 30);
 		btnNoUpdate.setFont(font2);
 		btnNoUpdate.setText("cancel");
 		btnNoUpdate.addActionListener(new ActionListener() {
@@ -131,47 +131,47 @@ public class MyPostUI extends JPanel {
 				pnPost.remove(btnNoUpdate);
 				pnPost.repaint();
 
-				System.out.println("¼öÁ¤ Ãë¼Ò");
+				System.out.println("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
 			}
 		});
 
-		JButton btnUpdate = new JButton(); // ¼öÁ¤ ¿©ºÎ ¹öÆ°
+		JButton btnUpdate = new JButton();
 		btnUpdate.setIcon(new ImageIcon(IC_LOC + "icUpdate.png"));
 		btnUpdate.setBounds(405, 10, 40, 40);
 		btnUpdate.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int result = JOptionPane.showConfirmDialog(pnPost, "¼öÁ¤ÇÏ½Ã°Ú½À´Ï±î?", null, JOptionPane.YES_NO_OPTION);
+				int result = JOptionPane.showConfirmDialog(pnPost, "Update?", null, JOptionPane.YES_NO_OPTION);
 
-				if (result == JOptionPane.YES_OPTION) { // ¼öÁ¤
+				if (result == JOptionPane.YES_OPTION) {
 					pnPost.add(btnDoUpdate);
 					pnPost.add(btnNoUpdate);
 					taCon.setFocusable(true);
 					taCon.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-					pnPost.repaint(); // ¹öÆ° Ãß°¡ÇßÀ¸´Ï »õ°í
-				} else if (result == JOptionPane.NO_OPTION) { // ¼öÁ¤ Ãë¼Ò
-					JOptionPane.showMessageDialog(pnPost, "cancle");
+					pnPost.repaint();
+				} else if (result == JOptionPane.NO_OPTION) {
+					JOptionPane.showMessageDialog(pnPost, "cancelled");
 				}
 			}
 		});
 
-		JButton btnDelete = new JButton(); // »èÁ¦ ¿©ºÎ ¹öÆ°
+		JButton btnDelete = new JButton();
 		btnDelete.setIcon(new ImageIcon(IC_LOC + "icDelete.png"));
 		btnDelete.setBounds(450, 10, 40, 40);
 		btnDelete.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int result = JOptionPane.showConfirmDialog(pnPost, "»èÁ¦ÇÏ½Ã°Ú½À´Ï±î?", null, JOptionPane.YES_NO_OPTION);
+				int result = JOptionPane.showConfirmDialog(pnPost, "Delete?", null, JOptionPane.YES_NO_OPTION);
 
-				if (result == JOptionPane.YES_OPTION) { // »èÁ¦
+				if (result == JOptionPane.YES_OPTION) {
 					rud.deletePost(pNo);
 
 					pnPost.revalidate();
-					pnPost.repaint(); // Áö±İ ÆĞ³Î ¸»°í ºÎ¸ğ°¡ »õ°íµÇ¾î¾ß ÇÏ´Âµ¥..ÀÌ°Ç ¾î¶»°Ô ÇØ¾ßÇÏÁö?
-				} else if (result == JOptionPane.NO_OPTION) { // »èÁ¦ Ãë¼Ò
-					JOptionPane.showMessageDialog(pnPost, "cancle");
+					pnPost.repaint();
+				} else if (result == JOptionPane.NO_OPTION) {
+					JOptionPane.showMessageDialog(pnPost, "cancelled");
 				}
 			}
 		});

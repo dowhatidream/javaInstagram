@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import db.DBCon;
 
 public class PostDAO {
-	DBCon db = new DBCon();
-	Connection con = db.getConnection();
+//	DBCon db = new DBCon();
+	Connection con = DBCon.getConnection();
 
 	public void create(PostDTO dto) {
 		try {
@@ -91,12 +91,7 @@ public class PostDAO {
 				dto.setuID(uID2);
 
 				myPostList.add(dto);
-				
-				System.out.println("dto      "+dto);
 			}
-
-			System.out.println("내화면의 리스트       " + myPostList);
-
 			System.out.println("[Post] SELECT (uID) completed.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,7 +107,6 @@ public class PostDAO {
 		try {
 			String sql = "SELECT COUNT(*) FROM post WHERE uID='" + uID + "' ";
 			PreparedStatement ps = con.prepareStatement(sql);
-
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {

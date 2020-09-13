@@ -3,12 +3,15 @@ package panel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -18,22 +21,23 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import frame.FramePost;
 import myMenu.PostDAO;
 import myMenu.PostDTO;
 
 public class PostUI extends JPanel {
-	final static String IMG_LOC = "E:/2020/java/workspace/instagram/img/"; // ?œ ??ê°? ???¥?•˜?Š” ?´ë¯¸ì?
-	boolean fileExist; // ?‚¬ì§„ì´ ?„ ?ƒ?˜?—ˆ?Š”ì§? ?—¬ë¶?
+	boolean fileExist; // íŒŒì¼ ì„ íƒì—¬ë¶€
 	File selectF;
 	String selectFName;
 	String selectFLoc;
-	BufferedImage img;
-	
-	String loginID = "aaaa"; // ?‚˜ì¤‘ì— ë°›ì•„?˜¤ê¸?
+	Image resizeImg;
 
+	String loginID = "aaaa"; // (ì„ì‹œ)ë‚˜ì¤‘ì— í˜„ì¬ ë¡œê·¸ì¸ ìœ ì € ë°›ì•„ì˜¤ê¸°
+	
 	public PostUI() {
+		final String IMG_LOC = "E:/2020/java/workspace/instagram/img/"; // ë‚´ê°€ ì‚¬ìš©í•  ì´ë¯¸ì§€ ìœ„ì¹˜
 		JFileChooser fc = new JFileChooser();
-		
+
 		JPanel pnImg = new JPanel();
 		pnImg.setBackground(new Color(255, 250, 205));
 		pnImg.setBounds(0, 0, 504, 480);
@@ -46,34 +50,40 @@ public class PostUI extends JPanel {
 		pnCon.setBounds(0, 490, 504, 250);
 
 		JTextArea taCon = new JTextArea();
-		taCon.setFont(new Font("ë§‘ì?ê³ ë”•", Font.PLAIN, 15));
+		taCon.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 15));
 		taCon.setBounds(0, 0, 504, 140);
 
-		JButton btnImg = new JButton("?‚¬ì§? ?„ ?ƒ");
-		btnImg.setFont(new Font("ë§‘ì? ê³ ë”•", Font.PLAIN, 17));
+		JButton btnImg = new JButton("Select a image");
+		btnImg.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 17));
 		btnImg.setBounds(0, 150, 504, 45);
 		btnImg.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int returnVal = fc.showOpenDialog(PostUI.this); // fcë¥? ?—´?–´?„œ ë¦¬í„´ê°? ???¥
-
+				int returnVal = fc.showOpenDialog(PostUI.this); // fc ì„ íƒ ê²°ê³¼
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					selectF = fc.getSelectedFile(); // file???…. file name ???¥
-					selectFName = selectF.getName(); // file name ???¥
-					selectFLoc = selectF.getAbsolutePath(); // file location ???¥
+					selectF = fc.getSelectedFile(); // í˜„ì¬ ì„ íƒí•œ file
+					selectFName = selectF.getName(); // file name
+					selectFLoc = selectF.getAbsolutePath(); // file location
+					
+					try {
+						BufferedImage img = ImageIO.read(selectF); // ì„ íƒí•œ íŒŒì¼ì„ ì´ë¯¸ì§€ë¡œ ì½ì–´ë“¤ì´ê¸°					
+						resizeImg = img.getScaledInstance(480, 480, Image.SCALE_SMOOTH);
+						
+						lbShowImg.setIcon(new ImageIcon(resizeImg)); // ì„ íƒí•œ íŒŒì¼ ì €ì¥ ìœ„ì¹˜ì—ì„œ ë¶ˆëŸ¬ì˜¤ê¸°
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 
-					lbShowImg.setIcon(new ImageIcon(selectFLoc)); // ë¶ˆëŸ¬?˜¨ file?„ label?— ?‚˜???‚´ê¸?
-
-					fileExist = true; // ?•„?ˆ˜ê°’ì´?‹ˆê¹? ?„ ?ƒ?–ˆ?œ¼ë©? true
+					fileExist = true; // íŒŒì¼ì´ ì„ íƒë˜ì—ˆìœ¼ë©´(ì¸ìŠ¤íƒ€ëŠ” ë¬´ì¡°ê±´ ì‚¬ì§„ ì„ íƒí•´ì•¼ ê¸€ ì˜¬ë¦´ ìˆ˜ ìˆìŒ
 				} else {
 					JOptionPane.showMessageDialog(pnImg, "Cancelled.");
 				}
 			}
 		});
 
-		JButton btnAdd = new JButton("?‘?„± ?™„ë£?");
-		btnAdd.setFont(new Font("ë§‘ì? ê³ ë”•", Font.PLAIN, 17));
+		JButton btnAdd = new JButton("Post");
+		btnAdd.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 17));
 		btnAdd.setBounds(0, 202, 504, 45);
 		btnAdd.addActionListener(new ActionListener() {
 
@@ -81,19 +91,12 @@ public class PostUI extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (fileExist) {
 					try {
-						Date date = new Date();
 						PostDTO dto = new PostDTO();
 						PostDAO dao = new PostDAO();
+						String pCDate = String.valueOf(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()));
 						
-						SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
-						String pCDate = String.valueOf(format.format(date));
-						
-						img = ImageIO.read(selectF); // ?„ ?ƒ?•œ ?ŒŒ?¼?„ ?´ë¯¸ì?ë¡? ?½?–´?“¤?„
-						int width = img.getWidth();
-						int height = img.getHeight();
-
-						BufferedImage saveImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
-						saveImg.createGraphics().drawImage(img, 0, 0, PostUI.this);
+						BufferedImage saveImg = new BufferedImage(480, 480, BufferedImage.TYPE_INT_BGR);
+						saveImg.createGraphics().drawImage(resizeImg, 0, 0, PostUI.this);
 
 						String imgName = loginID + "_" + pCDate + "_" + selectFName;
 						File saveFile = new File(IMG_LOC, imgName);
@@ -106,7 +109,6 @@ public class PostUI extends JPanel {
 						dto.setpImg(pImg);
 						dto.setpCDate(pCDate);
 						dto.setuID(loginID);
-
 						dao.create(dto);
 					} catch (Exception e2) {
 						e2.printStackTrace();
@@ -119,9 +121,13 @@ public class PostUI extends JPanel {
 					selectFLoc = null;
 					fileExist = false;
 
-					JOptionPane.showMessageDialog(pnCon, "Completed.");
+//					System.out.println("ì €ì¥ì„±ê³µí–ˆì–´. ì´ì œ ë³´ë‚¼ê²Œ");
+//					new FramePost().come();
+//					FramePost.result = true;
+
+//					JOptionPane.showMessageDialog(pnCon, "Completed.");
 				} else {
-					JOptionPane.showMessageDialog(pnCon, "Select a image!");
+					JOptionPane.showMessageDialog(pnCon, "No image selected!");
 				}
 			}
 		});

@@ -11,7 +11,7 @@ public class UserDAO {
 	public void createUser(UserDTO dto) {
 		try {
 			DBCon db = new DBCon();
-			Connection con = db.getConnection();
+			Connection con = DBCon.getConnection();
 		
 			String sql = "INSERT INTO user VALUES (?, ?, ?, ?) ";
 			PreparedStatement ps = con.prepareStatement(sql);

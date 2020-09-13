@@ -13,24 +13,27 @@ import myMenu.CommentDTO;
 import panel.AllCommentUI;
 import panel.CommentUI;
 
-public class FrameComment extends JFrame{
+public class FrameComment extends JFrame {
 
 	public FrameComment(int pNo) {
 		JScrollPane scroll = new JScrollPane();
 		scroll.setHorizontalScrollBar(null);
-		
+
 		JPanel pnBg = new JPanel();
 		pnBg.setLayout(new BoxLayout(pnBg, BoxLayout.Y_AXIS));
-		
+
 		AllCommentUI pnAllComent = new AllCommentUI(pNo);
 		pnAllComent.setPreferredSize(new Dimension(520, pnAllComent.height));
-		
+
 		CommentUI pnComment = new CommentUI(pNo);
-		
-		
+
+		if (pnAllComent.height == 0) {
+			pnBg.add(new JLabel("hey no comment"));
+		}
+
 		pnBg.add(pnAllComent);
 		pnBg.add(pnComment);
-		
+
 		scroll.getViewport().add(pnBg);
 		add(scroll);
 

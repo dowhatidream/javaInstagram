@@ -5,27 +5,21 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 import myMenu.CommentDAO;
 import myMenu.CommentDTO;
 import myMenu.CommentRUD;
 
 public class AllCommentUI extends JPanel {
-	
+
 	CommentRUD rud = new CommentRUD();
 	public int height;
 
@@ -34,16 +28,13 @@ public class AllCommentUI extends JPanel {
 	public AllCommentUI(int pNo) {
 		CommentDAO dao = new CommentDAO();
 		ArrayList<CommentDTO> commentList = dao.read(pNo);
-		
+
 		height = commentList.size() * 100;
 
-		if (commentList.size() == 0) {
-			add(new JLabel("No Comment!"));
-		} else {
-			for (int i = 0; i < commentList.size(); i++) {
-				CommentDTO dto = commentList.get(i);
-				add(addPanel(dto.getcNo(), dto.getcCon(), dto.getcCDate(), dto.getcUDate(), dto.getuID(), dto.getpNo()));
-			}
+		for (int i = 0; i < commentList.size(); i++) {
+			CommentDTO dto = commentList.get(i);
+			add(addPanel(dto.getcNo(), dto.getcCon(), dto.getcCDate(), dto.getcUDate(), dto.getuID(),
+					dto.getpNo()));
 		}
 
 		setSize(540, 100);
@@ -53,9 +44,9 @@ public class AllCommentUI extends JPanel {
 	}
 
 	public JPanel addPanel(int cNo, String cCon, String cCDate, String cUDate, String uID, int pNo) {
-		final String IC_LOC = "E:/2020/java/workspace/instagram/icon/"; // ³»°¡ ¾µ ¾ÆÀÌÄÜ ÀÌ¹ÌÁö À§Ä¡
-//		JButton btnDoUpdate = new JButton(); // (ÆíÁý ¼±ÅÃ½Ã ³ªÅ¸³ª´Â) ¼öÁ¤ ÁøÇà ¹öÆ°
-//		JButton btnNoUpdate = new JButton(); // (ÆíÁý ¼±ÅÃ½Ã ³ªÅ¸³ª´Â) ¼öÁ¤ Ãë¼Ò ¹öÆ°
+		final String IC_LOC = "E:/2020/java/workspace/instagram/icon/"; // ì´ë¯¸ì§€ ìœ„ì¹˜
+//		JButton btnDoUpdate = new JButton(); 
+//		JButton btnNoUpdate = new JButton();
 
 		JPanel pnComment = new JPanel();
 		pnComment.setBackground(Color.white);
@@ -63,9 +54,9 @@ public class AllCommentUI extends JPanel {
 		pnComment.setSize(500, 90);
 		pnComment.setPreferredSize(new Dimension(500, 90));
 
-		Font font = new Font("¸¼Àº°íµñ", Font.PLAIN, 15);
-		Font font2 = new Font("¸¼Àº°íµñ", Font.BOLD, 15);
-		Font font3 = new Font("¸¼Àº°íµñ", Font.PLAIN, 12);
+		Font font = new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 15);
+		Font font2 = new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 15);
+		Font font3 = new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 12);
 
 		JLabel lbProfile = new JLabel();
 		lbProfile.setBounds(10, 10, 55, 55);
@@ -86,7 +77,7 @@ public class AllCommentUI extends JPanel {
 		lbCDate.setFont(font3);
 		lbCDate.setText(cCDate);
 
-//		btnDoUpdate.setBounds(355, 690, 60, 30); // ¼öÁ¤ ÁøÇà ¹öÆ°
+//		btnDoUpdate.setBounds(355, 690, 60, 30); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°
 //		btnDoUpdate.setFont(font2);
 //		btnDoUpdate.setText("Done");
 //		btnDoUpdate.addActionListener(new ActionListener() {
@@ -106,7 +97,7 @@ public class AllCommentUI extends JPanel {
 //			}
 //		});
 //
-//		btnNoUpdate.setBounds(420, 690, 65, 30); // ¼öÁ¤ Ãë¼Ò ¹öÆ°
+//		btnNoUpdate.setBounds(420, 690, 65, 30); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°
 //		btnNoUpdate.setFont(font2);
 //		btnNoUpdate.setText("cancel");
 //		btnNoUpdate.addActionListener(new ActionListener() {
@@ -119,47 +110,43 @@ public class AllCommentUI extends JPanel {
 //				pnComment.remove(btnNoUpdate);
 //				pnComment.repaint();
 //
-//				System.out.println("¼öÁ¤ Ãë¼Ò");
+//				System.out.println("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
 //			}
 //		});
 
-		JButton btnUpdate = new JButton(); // ¼öÁ¤ ¿©ºÎ ¹öÆ°
+		JButton btnUpdate = new JButton();
 		btnUpdate.setIcon(new ImageIcon(IC_LOC + "icUpdate.png"));
 		btnUpdate.setBounds(420, 10, 30, 30);
 		btnUpdate.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int result = JOptionPane.showConfirmDialog(pnComment, "¼öÁ¤ÇÏ½Ã°Ú½À´Ï±î?", null, JOptionPane.YES_NO_OPTION);
+				int result = JOptionPane.showConfirmDialog(pnComment, "Update?", null, JOptionPane.YES_NO_OPTION);
 
-				if (result == JOptionPane.YES_OPTION) { // ¼öÁ¤
-//					pnComment.add(btnDoUpdate);
-//					pnComment.add(btnNoUpdate);
-//					taCon.setFocusable(true);
+				if (result == JOptionPane.YES_OPTION) {
 
-
-					pnComment.repaint(); // ¹öÆ° Ãß°¡ÇßÀ¸´Ï »õ°í
-				} else if (result == JOptionPane.NO_OPTION) { // ¼öÁ¤ Ãë¼Ò
+					pnComment.repaint();
+				} else if (result == JOptionPane.NO_OPTION) {
 					JOptionPane.showMessageDialog(pnComment, "cancle");
 				}
 			}
 		});
 
-		JButton btnDelete = new JButton(); // »èÁ¦ ¿©ºÎ ¹öÆ°
+		JButton btnDelete = new JButton();
 		btnDelete.setIcon(new ImageIcon(IC_LOC + "icDelete.png"));
 		btnDelete.setBounds(460, 10, 30, 30);
 		btnDelete.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int result = JOptionPane.showConfirmDialog(pnComment, "»èÁ¦ÇÏ½Ã°Ú½À´Ï±î?", null, JOptionPane.YES_NO_OPTION);
+				int result = JOptionPane.showConfirmDialog(pnComment, "Delete?", null, JOptionPane.YES_NO_OPTION);
 
-				if (result == JOptionPane.YES_OPTION) { // »èÁ¦
+				if (result == JOptionPane.YES_OPTION) {
 					rud.deletePost(cNo);
 
 					pnComment.revalidate();
-					pnComment.repaint(); // Áö±Ý ÆÐ³Î ¸»°í ºÎ¸ð°¡ »õ°íµÇ¾î¾ß ÇÏ´Âµ¥..ÀÌ°Ç ¾î¶»°Ô ÇØ¾ßÇÏÁö?
-				} else if (result == JOptionPane.NO_OPTION) { // »èÁ¦ Ãë¼Ò
+					pnComment.repaint();
+				} else if (result == JOptionPane.NO_OPTION) {
 					JOptionPane.showMessageDialog(pnComment, "cancle");
 				}
 			}

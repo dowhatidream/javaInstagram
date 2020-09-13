@@ -16,22 +16,22 @@ public class ProfileUI extends JPanel {
 	String loginID = "aaaa";
 
 	public ProfileUI() {
-		final String IC_LOC = "E:/2020/java/workspace/instagram/icon/"; // ³»°¡ ¾µ ¾ÆÀÌÄÜ ÀÌ¹ÌÁö À§Ä¡
+		final String IC_LOC = "E:/2020/java/workspace/instagram/icon/";
 
-		JLabel lbProfile = new JLabel(new ImageIcon(IC_LOC + "icPerson.png")); // À¯ÀúÇÁ·ÎÇÊ ¡Ú À¯Àú°¡ ÁöÁ¤ÇÒ ¼ö ÀÖ°Ô ÇÒ±î?
+		JLabel lbProfile = new JLabel(new ImageIcon(IC_LOC + "icPerson.png"));
 		lbProfile.setBounds(0, 0, 64, 64);
-		
+
 		JLabel lbIntro = new JLabel("Life is short...you need JAVA");
 		lbIntro.setBounds(10, 50, 200, 64);
-		
-		JLabel lbCount = new JLabel(new PostDAO().readMine(loginID)+"");
+
+		JLabel lbCount = new JLabel(new PostDAO().readMine(loginID) + "");
 		lbCount.setBounds(450, 15, 30, 30);
-		lbCount.setFont(new Font("¸¼Àº°íµñ", 0, 24));
+		lbCount.setFont(new Font("ë§‘ì€ ê³ ë”•", 0, 24));
 		lbCount.setBackground(Color.yellow);
 
 		JLabel lbText = new JLabel("POST");
 		lbText.setBounds(437, 37, 60, 30);
-		lbText.setFont(new Font("¸¼Àº°íµñ", 0, 14));
+		lbText.setFont(new Font("ë§‘ì€ ê³ ë”•", 0, 14));
 		lbText.setBackground(Color.yellow);
 
 		JButton btnEdit = new JButton("Edit");
