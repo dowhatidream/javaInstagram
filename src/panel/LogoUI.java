@@ -15,7 +15,7 @@ public class LogoUI extends JPanel {
 		lbLogo.setBounds(0, 0, 70, 70);
 		
 		JLabel lbText = new JLabel(title);
-		lbText.setFont(new Font("∏º¿∫∞ÌµÒ", Font.PLAIN, 20));
+		lbText.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.PLAIN, 20));
 		lbText.setBounds(80, -5, 200, 80);
 		
 		add(lbText);

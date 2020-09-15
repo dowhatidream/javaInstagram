@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import db.DBCon;
 
 public class PostDAO {
-//	DBCon db = new DBCon();
-	Connection con = DBCon.getConnection();
+	DBCon db = new DBCon();
+	Connection con = db.getConnection();
 
-	public void create(PostDTO dto) {
+	public void create(PostDTO dto) { // 게시글 생성
 		try {
 			String sql = "INSERT INTO post VALUES (null, ?, ?, ?, null, 0, ?)";
 			PreparedStatement ps = con.prepareStatement(sql);
@@ -21,6 +21,7 @@ public class PostDAO {
 			ps.setString(3, dto.getpCDate());
 			ps.setString(4, dto.getuID());
 			ps.executeUpdate();
+			
 			System.out.println("[Post] INSERT completed.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -28,11 +29,11 @@ public class PostDAO {
 		}
 	}
 
-	public ArrayList<PostDTO> read() {
+	public ArrayList<PostDTO> read() { // 게시물 조회
 		ArrayList<PostDTO> postList = new ArrayList<PostDTO>();
 
 		try {
-			String sql = "SELECT * FROM post ";
+			String sql = "SELECT * FROM post ORDER BY pNo DESC "; // 내림차순으로 조회해서 최근 글부터 볼 수 있도록
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 
@@ -44,6 +45,7 @@ public class PostDAO {
 				String pCon = rs.getString("pCon");
 				int pHeart = rs.getInt("pHeart");
 				String pCDate = rs.getString("pCDate");
+				String pUDate = rs.getString("pUDate");
 				String uID = rs.getString("uID");
 
 				dto.setpNo(pNo);
@@ -51,8 +53,8 @@ public class PostDAO {
 				dto.setpCon(pCon);
 				dto.setpHeart(pHeart);
 				dto.setpCDate(pCDate);
+				dto.setpUDate(pUDate);
 				dto.setuID(uID);
-
 				postList.add(dto);
 			}
 
@@ -65,11 +67,11 @@ public class PostDAO {
 		return postList;
 	}
 
-	public ArrayList<PostDTO> read(String uID) {
+	public ArrayList<PostDTO> read(String uID) { // 내 게시물만 조회
 		ArrayList<PostDTO> myPostList = new ArrayList<PostDTO>();
 
 		try {
-			String sql = "SELECT * FROM post WHERE uID='" + uID + "' ";
+			String sql = "SELECT * FROM post WHERE uID='" + uID + "' ORDER BY pNo DESC ";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 
@@ -89,9 +91,9 @@ public class PostDAO {
 				dto.setpHeart(pHeart);
 				dto.setpCDate(pCDate);
 				dto.setuID(uID2);
-
 				myPostList.add(dto);
 			}
+			
 			System.out.println("[Post] SELECT (uID) completed.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,7 +103,7 @@ public class PostDAO {
 		return myPostList;
 	}
 	
-	public int readMine(String uID) {
+	public int readCount(String uID) { // 내 게시물 개수 조회
 		int count = 0;
 
 		try {
@@ -122,7 +124,7 @@ public class PostDAO {
 		return count;
 	}
 
-	public void update(PostDTO dto) {
+	public void update(PostDTO dto) { // 게시물 수정
 		try {
 			String sql = "UPDATE post SET pCon=?, pUDate=? WHERE pNo=? ";
 			PreparedStatement ps = con.prepareStatement(sql);
@@ -137,7 +139,7 @@ public class PostDAO {
 		}
 	}
 
-	public int update(int pNo, int value) { // value는 1 혹은 -1로 세팅해놓음
+	public int update(int pNo, int value) { // 게시물의 좋아요 수정(value는 1 혹은 -1로 세팅해놓음)
 		int pHeart = 0;
 
 		try {
@@ -166,6 +168,7 @@ public class PostDAO {
 		try {
 			String sql = "DELETE FROM post WHERE pNo=?";
 			PreparedStatement ps = con.prepareStatement(sql);
+			
 			ps.setInt(1, dto.getpNo());
 			ps.executeUpdate();
 

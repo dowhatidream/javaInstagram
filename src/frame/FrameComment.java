@@ -1,7 +1,6 @@
 package frame;
 
 import java.awt.Dimension;
-import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -9,32 +8,26 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import myMenu.CommentDTO;
 import panel.AllCommentUI;
-import panel.CommentUI;
 
 public class FrameComment extends JFrame {
-
+	static public FrameComment fc;
+	
 	public FrameComment(int pNo) {
-		JScrollPane scroll = new JScrollPane();
-		scroll.setHorizontalScrollBar(null);
-
-		JPanel pnBg = new JPanel();
+		JPanel pnBg = new JPanel(); // 배경 패널
 		pnBg.setLayout(new BoxLayout(pnBg, BoxLayout.Y_AXIS));
+		
+		JScrollPane scroll = new JScrollPane(pnBg); // 스크롤패널에 배경 패널 얹기
+		scroll.setHorizontalScrollBar(null); // 가로 스크롤 막기
 
-		AllCommentUI pnAllComent = new AllCommentUI(pNo);
-		pnAllComent.setPreferredSize(new Dimension(520, pnAllComent.height));
-
-		CommentUI pnComment = new CommentUI(pNo);
-
-		if (pnAllComent.height == 0) {
-			pnBg.add(new JLabel("hey no comment"));
+		AllCommentUI pnAllComent = new AllCommentUI(pNo); // 전체 댓글 패널 객체 생성
+		if (pnAllComent.height == 0) { // 댓글이 하나도 없으면, 빈 화면이 아니라 없는 거라고 알려줌
+			pnBg.add(new JLabel("hey you have no comment"));
 		}
-
+		pnAllComent.setPreferredSize(new Dimension(520, pnAllComent.height));
+		
 		pnBg.add(pnAllComent);
-		pnBg.add(pnComment);
 
-		scroll.getViewport().add(pnBg);
 		add(scroll);
 
 		setSize(540, 560);

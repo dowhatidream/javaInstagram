@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import frame.FramePost;
+import myMenu.NowUser;
 import myMenu.PostDAO;
 import myMenu.PostDTO;
 
@@ -32,10 +33,10 @@ public class PostUI extends JPanel {
 	String selectFLoc;
 	Image resizeImg;
 
-	String loginID = "aaaa"; // (임시)나중에 현재 로그인 유저 받아오기
-	
-	public PostUI() {
-		final String IMG_LOC = "E:/2020/java/workspace/instagram/img/"; // 내가 사용할 이미지 위치
+	String loginID = NowUser.getloginID(); // 현재 로긴한 유저
+
+	public PostUI(FramePost f) {
+		final String IMG_LOC = "E:/2020/java/workspace/instagram/icon/"; // 이미지 위치
 		JFileChooser fc = new JFileChooser();
 
 		JPanel pnImg = new JPanel();
@@ -56,6 +57,7 @@ public class PostUI extends JPanel {
 		JButton btnImg = new JButton("Select a image");
 		btnImg.setFont(new Font("맑은 고딕", Font.PLAIN, 17));
 		btnImg.setBounds(0, 150, 504, 45);
+		btnImg.setContentAreaFilled(false);
 		btnImg.addActionListener(new ActionListener() {
 
 			@Override
@@ -65,11 +67,11 @@ public class PostUI extends JPanel {
 					selectF = fc.getSelectedFile(); // 현재 선택한 file
 					selectFName = selectF.getName(); // file name
 					selectFLoc = selectF.getAbsolutePath(); // file location
-					
+
 					try {
-						BufferedImage img = ImageIO.read(selectF); // 선택한 파일을 이미지로 읽어들이기					
+						BufferedImage img = ImageIO.read(selectF); // 선택한 파일을 이미지로 읽어들이기
 						resizeImg = img.getScaledInstance(480, 480, Image.SCALE_SMOOTH);
-						
+
 						lbShowImg.setIcon(new ImageIcon(resizeImg)); // 선택한 파일 저장 위치에서 불러오기
 					} catch (IOException e1) {
 						e1.printStackTrace();
@@ -85,6 +87,7 @@ public class PostUI extends JPanel {
 		JButton btnAdd = new JButton("Post");
 		btnAdd.setFont(new Font("맑은 고딕", Font.PLAIN, 17));
 		btnAdd.setBounds(0, 202, 504, 45);
+		btnAdd.setContentAreaFilled(false);
 		btnAdd.addActionListener(new ActionListener() {
 
 			@Override
@@ -93,8 +96,8 @@ public class PostUI extends JPanel {
 					try {
 						PostDTO dto = new PostDTO();
 						PostDAO dao = new PostDAO();
-						String pCDate = String.valueOf(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()));
-						
+						String pCDate = String.valueOf(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+
 						BufferedImage saveImg = new BufferedImage(480, 480, BufferedImage.TYPE_INT_BGR);
 						saveImg.createGraphics().drawImage(resizeImg, 0, 0, PostUI.this);
 
@@ -110,22 +113,12 @@ public class PostUI extends JPanel {
 						dto.setpCDate(pCDate);
 						dto.setuID(loginID);
 						dao.create(dto);
+
+						JOptionPane.showMessageDialog(pnCon, "Completed.");
+						f.screenHome();
 					} catch (Exception e2) {
 						e2.printStackTrace();
 					}
-
-					lbShowImg.setIcon(null);
-					taCon.setText(null);
-					selectF = null;
-					selectFName = null;
-					selectFLoc = null;
-					fileExist = false;
-
-//					System.out.println("저장성공했어. 이제 보낼게");
-//					new FramePost().come();
-//					FramePost.result = true;
-
-//					JOptionPane.showMessageDialog(pnCon, "Completed.");
 				} else {
 					JOptionPane.showMessageDialog(pnCon, "No image selected!");
 				}

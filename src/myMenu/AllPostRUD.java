@@ -4,7 +4,7 @@ public class AllPostRUD {
 	PostDAO dao = new PostDAO();
 	PostDTO dto = new PostDTO();
 
-	public void updatePost(int pNo, String pCon, String pUDate) {
+	public void updatePost(int pNo, String pCon, String pUDate) { // 게시글 수정 컨트롤러
 		try {
 			dto.setpCon(pCon);
 			dto.setpUDate(pUDate);
@@ -16,7 +16,7 @@ public class AllPostRUD {
 		}
 	}
 
-	public void deletePost(int pNo) {
+	public void deletePost(int pNo) { // 게시글 삭제 컨트롤러
 		try {
 			dto.setpNo(pNo);
 

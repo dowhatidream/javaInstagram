@@ -12,10 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import myMenu.UserDAO;
-import myMenu.UserDTO;
-
 import javax.swing.JPasswordField;
 
 public class Register extends JPanel {
@@ -28,24 +24,24 @@ public class Register extends JPanel {
 		JLabel lb = new JLabel(img);
 		lb.setBounds(74, 127, 363, 111);
 
-		JLabel lb2 = new JLabel("¾ÆÀÌµð");
-		lb2.setFont(new Font("¸¼Àº°íµñ", Font.BOLD, 17));
+		JLabel lb2 = new JLabel("ï¿½ï¿½ï¿½Ìµï¿½");
+		lb2.setFont(new Font("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 17));
 		lb2.setBounds(157, 276, 73, 45);
 
-		JLabel lb3 = new JLabel("ºñ¹Ð¹øÈ£");
-		lb3.setFont(new Font("¸¼Àº°íµñ", Font.BOLD, 17));
+		JLabel lb3 = new JLabel("ï¿½ï¿½Ð¹ï¿½È£");
+		lb3.setFont(new Font("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 17));
 		lb3.setBounds(157, 347, 89, 45);
 
-		JLabel lb4 = new JLabel("ºñ¹Ð¹øÈ£ ÀçÀÔ·Â");
-		lb4.setFont(new Font("¸¼Àº°íµñ", Font.BOLD, 17));
+		JLabel lb4 = new JLabel("ï¿½ï¿½Ð¹ï¿½È£ ï¿½ï¿½ï¿½Ô·ï¿½");
+		lb4.setFont(new Font("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 17));
 		lb4.setBounds(157, 430, 126, 45);
 
-		JLabel lb5 = new JLabel("ÀüÈ­¹øÈ£");
-		lb5.setFont(new Font("¸¼Àº°íµñ", Font.BOLD, 17));
+		JLabel lb5 = new JLabel("ï¿½ï¿½È­ï¿½ï¿½È£");
+		lb5.setFont(new Font("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 17));
 		lb5.setBounds(157, 511, 107, 45);
 
 		JTextField tfID = new JTextField(10);
-		tfID.setFont(new Font("¸¼Àº°íµñ", Font.PLAIN, 20));
+		tfID.setFont(new Font("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", Font.PLAIN, 20));
 		tfID.setBackground(Color.WHITE);
 		tfID.setColumns(10);
 		tfID.setBounds(158, 316, 222, 31);
@@ -62,8 +58,8 @@ public class Register extends JPanel {
 		JPasswordField tfPWC = new JPasswordField();
 		tfPWC.setBounds(158, 465, 222, 31);
 
-		JButton btnRegister = new JButton("°¡ÀÔ ¿Ï·á");
-		btnRegister.setFont(new Font("¸¼Àº°íµñ", Font.BOLD, 20));
+		JButton btnRegister = new JButton("ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
+		btnRegister.setFont(new Font("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 20));
 		btnRegister.setBounds(181, 659, 168, 38);
 		btnRegister.addActionListener(new ActionListener() {
 
@@ -82,7 +78,7 @@ public class Register extends JPanel {
 				dto.setuCDate(uCDate);
 
 				dao.createUser(dto);
-				JOptionPane.showMessageDialog(null, uID + "´Ô °¡ÀÔ ¿Ï·á!");
+				JOptionPane.showMessageDialog(null, uID + "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½!");
 
 				uID = null;
 				uPW = null;

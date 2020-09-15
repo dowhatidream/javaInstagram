@@ -19,11 +19,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import frame.FrameComment;
-import frame.FramePost;
 import myMenu.AllPostRUD;
 import myMenu.CommentDAO;
+import myMenu.DateSlicer;
 import myMenu.HeartDAO;
 import myMenu.HeartDTO;
+import myMenu.NowUser;
 import myMenu.PostDAO;
 import myMenu.PostDTO;
 
@@ -32,32 +33,32 @@ public class AllPostUI extends JPanel {
 	AllPostRUD rud = new AllPostRUD();
 	public int height;
 
-	String loginID = "aaaa"; // 현재 로긴한 유저
+	String loginID = NowUser.getloginID(); // 현재 로긴한 유저
 
 	public AllPostUI() {
 		try {
 			PostDAO pDao = new PostDAO();
 			ArrayList<PostDTO> postList = pDao.read();
 
-			height = postList.size() * 730; // 스크롤 길이 정하려고 만듦
+			height = postList.size() * 715; // 스크롤 길이 정하려고 만듦
 
 			for (int i = 0; i < postList.size(); i++) {
 				PostDTO dto = postList.get(i); // 갖고 왔으면 써야지!! 까먹지마
-				add(addPanel(dto.getpNo(), dto.getpImg(), dto.getpCon(), dto.getpCDate(), dto.getpHeart(),
-						dto.getuID()));
+				add(addPanel(dto.getpNo(), dto.getpImg(), dto.getpCon(), DateSlicer.slice(dto.getpCDate()),
+						dto.getpUDate(), dto.getpHeart(), dto.getuID()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		setSize(505, 730);
-		setPreferredSize(new Dimension(505, 730));
+		setSize(505, 715);
+		setPreferredSize(new Dimension(505, 715));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setVisible(true);
 	}
 
-	public JPanel addPanel(int pNo, String pImg, String pCon, String uCDate, int pHeart, String uID) {
-		final String IC_LOC = "E:/2020/java/workspace/instagram/icon/";
+	public JPanel addPanel(int pNo, String pImg, String pCon, String pCDate, String pUDate, int pHeart, String uID) {
+		final String IC_LOC = "E:/2020/java/workspace/instagram/icon/"; // 이미지 위치
 		JButton btnDoUpdate = new JButton();
 		JButton btnNoUpdate = new JButton();
 		ImageIcon icUnheart = new ImageIcon(IC_LOC + "icUnheart.png");
@@ -71,43 +72,57 @@ public class AllPostUI extends JPanel {
 		pnPost.setPreferredSize(new Dimension(500, 730));
 
 		Font font = new Font("맑은 고딕", 0, 12);
-		Font font2 = new Font("맑은 고딕", 0, 9);
+		Font font2 = new Font("맑은 고딕", 0, 10);
+		Font font3 = new Font("맑은 고딕", Font.BOLD, 13);
+		Font font4 = new Font("맑은 고딕", 0, 14);
 
 		JLabel lbProfile = new JLabel(new ImageIcon(IC_LOC + "icPerson.png"));
 		lbProfile.setBounds(10, 10, 48, 48);
 
 		JLabel lbCDate = new JLabel();
-		lbCDate.setText(uCDate);
-		lbCDate.setBounds(70, 20, 150, 12);
+		lbCDate.setText(pCDate);
+		lbCDate.setBounds(67, 17, 150, 12);
 		lbCDate.setFont(font);
+
+		JLabel lbsetUp = new JLabel();
+		lbsetUp.setBounds(200, 16, 150, 14);
+		lbsetUp.setFont(font);
+		lbsetUp.setForeground(Color.gray);
+		if (pUDate != null) {
+			lbsetUp.setText("수정됨");
+			pnPost.add(lbsetUp);
+			pnPost.repaint();
+		}
 
 		JLabel lbUID = new JLabel();
 		lbUID.setText(uID);
-		lbUID.setBounds(70, 30, 100, 20);
-		lbUID.setFont(font);
+		lbUID.setBounds(67, 30, 100, 20);
+		lbUID.setFont(font3);
 
 		JLabel lbImg = new JLabel();
 		lbImg.setIcon(new ImageIcon(pImg));
-		lbImg.setBounds(10, 60, 480, 480);
+		lbImg.setBounds(10, 61, 480, 480);
 
 		JTextArea taCon = new JTextArea();
 		taCon.setText(pCon);
-		taCon.setBounds(10, 610, 480, 70);
+		taCon.setBounds(15, 605, 470, 60);
 		taCon.setFont(font);
 		taCon.setFocusable(false);
 
-		btnDoUpdate.setBounds(355, 690, 60, 30);
+		btnDoUpdate.setBounds(354, 673, 60, 28);
 		btnDoUpdate.setFont(font2);
 		btnDoUpdate.setText("Done");
+		btnDoUpdate.setBackground(null);
 		btnDoUpdate.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd HHmmss");
+				SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
 				String pUDate = String.valueOf(format.format(new Date()));
 
 				rud.updatePost(pNo, taCon.getText(), pUDate);
 
+				pnPost.add(lbsetUp);
 				taCon.setFocusable(false);
 				taCon.setBorder(null);
 				pnPost.remove(btnDoUpdate);
@@ -116,9 +131,10 @@ public class AllPostUI extends JPanel {
 			}
 		});
 
-		btnNoUpdate.setBounds(420, 690, 65, 30);
+		btnNoUpdate.setBounds(419, 673, 63, 28);
 		btnNoUpdate.setFont(font2);
-		btnNoUpdate.setText("cancel");
+		btnNoUpdate.setText("Cancel");
+		btnNoUpdate.setBackground(null);
 		btnNoUpdate.addActionListener(new ActionListener() {
 
 			@Override
@@ -132,8 +148,10 @@ public class AllPostUI extends JPanel {
 		});
 
 		JButton btnUpdate = new JButton();
-		btnUpdate.setIcon(new ImageIcon(IC_LOC + "icUpdate.png"));
-		btnUpdate.setBounds(405, 10, 40, 40);
+		btnUpdate.setIcon(new ImageIcon(IC_LOC + "icUpdate2.png"));
+		btnUpdate.setBounds(420, 20, 40, 40);
+		btnUpdate.setBackground(null);
+		btnUpdate.setBorder(null);
 		btnUpdate.addActionListener(new ActionListener() {
 
 			@Override
@@ -144,7 +162,6 @@ public class AllPostUI extends JPanel {
 					pnPost.add(btnDoUpdate);
 					pnPost.add(btnNoUpdate);
 					taCon.setFocusable(true);
-
 					taCon.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 					pnPost.repaint();
 				} else if (result == JOptionPane.NO_OPTION) {
@@ -154,8 +171,10 @@ public class AllPostUI extends JPanel {
 		});
 
 		JButton btnDelete = new JButton();
-		btnDelete.setIcon(new ImageIcon(IC_LOC + "icDelete.png"));
-		btnDelete.setBounds(450, 10, 40, 40);
+		btnDelete.setIcon(new ImageIcon(IC_LOC + "icDelete2.png"));
+		btnDelete.setBounds(450, 20, 40, 40);
+		btnDelete.setBackground(null);
+		btnDelete.setBorder(null);
 		btnDelete.addActionListener(new ActionListener() {
 
 			@Override
@@ -164,9 +183,6 @@ public class AllPostUI extends JPanel {
 
 				if (result == JOptionPane.YES_OPTION) {
 					rud.deletePost(pNo);
-					new FramePost().screen(1);
-//					pnPost.revalidate();
-//					pnPost.repaint();
 				} else if (result == JOptionPane.NO_OPTION) {
 					JOptionPane.showMessageDialog(pnPost, "cancelled");
 				}
@@ -174,8 +190,9 @@ public class AllPostUI extends JPanel {
 		});
 
 		JLabel lbHeart = new JLabel();
-		lbHeart.setText("Heart " + pHeart);
-		lbHeart.setBounds(125, 550, 48, 48);
+		lbHeart.setBounds(17, 568, 150, 45);
+		lbHeart.setText(pHeart + "명이 좋아합니다");
+		lbHeart.setFont(font);
 
 		JButton btnHeart = new JButton();
 		if (hDao.read(pNo, loginID)) { // 좋아요 누른 게시글
@@ -183,8 +200,9 @@ public class AllPostUI extends JPanel {
 		} else { // 안 누른 게시글
 			btnHeart.setIcon(icUnheart);
 		}
-		btnHeart.setBounds(10, 550, 48, 48);
-		btnHeart.setText(null);
+		btnHeart.setBounds(10, 542, 38, 38);
+		btnHeart.setBackground(null);
+		btnHeart.setBorder(null);
 		btnHeart.addActionListener(new ActionListener() {
 
 			@Override
@@ -200,10 +218,9 @@ public class AllPostUI extends JPanel {
 
 					hDto.setpNo(pNo);
 					hDto.setuID(loginID);
+					hDao.create(hDto);
 
-					hDao.create(hDto); // ?????
-
-					lbHeart.setText("Heart " + pHeart);
+					lbHeart.setText(pHeart + "명이 좋아합니다");
 					pnPost.repaint();
 				} else if (btnHeart.getIcon() == icHeart) {
 					btnHeart.setIcon(icUnheart);
@@ -212,10 +229,9 @@ public class AllPostUI extends JPanel {
 
 					hDto.setpNo(pNo);
 					hDto.setuID(loginID);
-
 					hDao.delete(hDto);
 
-					lbHeart.setText("Heart " + pHeart);
+					lbHeart.setText(pHeart + "명이 좋아합니다");
 					pnPost.repaint();
 				}
 			}
@@ -223,9 +239,13 @@ public class AllPostUI extends JPanel {
 
 		JButton btnComment = new JButton();
 		btnComment.setIcon(new ImageIcon(IC_LOC + "icComment.png"));
-		btnComment.setBounds(65, 550, 48, 48);
-		btnComment.setFont(font);
-		btnComment.setText(null);
+		btnComment.setBounds(48, 542, 38, 38);
+		btnComment.setFont(font4);
+		btnComment.setText(String.valueOf(new CommentDAO().read("pNo", pNo).size()));
+		btnComment.setHorizontalTextPosition(JButton.CENTER);
+		btnComment.setVerticalTextPosition(JButton.CENTER);
+		btnComment.setBackground(null);
+		btnComment.setBorder(null);
 		btnComment.addActionListener(new ActionListener() {
 
 			@Override
@@ -235,24 +255,20 @@ public class AllPostUI extends JPanel {
 			}
 		});
 
-		JLabel lbComment = new JLabel();
-		lbComment.setBounds(410, 540, 100, 70);
-		lbComment.setFont(font);
-		lbComment.setText("Comment " + String.valueOf(new CommentDAO().read(pNo).size()));
+		if (uID.matches(loginID)) { // 내 게시글만 수정, 삭제 버튼 보임!
+			pnPost.add(btnUpdate);
+			pnPost.add(btnDelete);
+		}
 
 		pnPost.add(lbProfile);
 		pnPost.add(lbUID);
-		pnPost.add(btnUpdate);
-		pnPost.add(btnDelete);
 		pnPost.add(lbImg);
 		pnPost.add(lbCDate);
 		pnPost.add(taCon);
 		pnPost.add(lbHeart);
 		pnPost.add(btnHeart);
 		pnPost.add(btnComment);
-		pnPost.add(lbComment);
 
 		return pnPost;
 	}
-
 }

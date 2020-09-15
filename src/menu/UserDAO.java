@@ -1,4 +1,4 @@
-package myMenu;
+package menu;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +11,7 @@ public class UserDAO {
 	public void createUser(UserDTO dto) {
 		try {
 			DBCon db = new DBCon();
-			Connection con = DBCon.getConnection();
+			Connection con = db.getConnection();
 		
 			String sql = "INSERT INTO user VALUES (?, ?, ?, ?) ";
 			PreparedStatement ps = con.prepareStatement(sql);

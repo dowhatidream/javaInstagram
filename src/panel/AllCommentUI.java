@@ -17,26 +17,32 @@ import javax.swing.JPanel;
 import myMenu.CommentDAO;
 import myMenu.CommentDTO;
 import myMenu.CommentRUD;
+import myMenu.DateSlicer;
+import myMenu.NowUser;
 
 public class AllCommentUI extends JPanel {
-
 	CommentRUD rud = new CommentRUD();
-	public int height;
+	CommentDAO dao = new CommentDAO();
+	ArrayList<CommentDTO> commentList;
+	CommentUI com;
+	CommentDTO dto;
+	public int height; // 패널 높이 구하려고 만듦
 
-	String loginID = "aaaa";
+	String loginID = NowUser.getloginID(); // 현재 로긴한 유저
 
 	public AllCommentUI(int pNo) {
-		CommentDAO dao = new CommentDAO();
-		ArrayList<CommentDTO> commentList = dao.read(pNo);
+		commentList = dao.read("pNo", pNo);
 
 		height = commentList.size() * 100;
 
 		for (int i = 0; i < commentList.size(); i++) {
-			CommentDTO dto = commentList.get(i);
-			add(addPanel(dto.getcNo(), dto.getcCon(), dto.getcCDate(), dto.getcUDate(), dto.getuID(),
+			dto = commentList.get(i);
+			add(addPanel(dto.getcNo(), dto.getcCon(), DateSlicer.slice(dto.getcCDate()), dto.getcUDate(), dto.getuID(),
 					dto.getpNo()));
 		}
+		com = new CommentUI(pNo);
 
+		add(com);
 		setSize(540, 100);
 		setPreferredSize(new Dimension(505, 100));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -45,8 +51,6 @@ public class AllCommentUI extends JPanel {
 
 	public JPanel addPanel(int cNo, String cCon, String cCDate, String cUDate, String uID, int pNo) {
 		final String IC_LOC = "E:/2020/java/workspace/instagram/icon/"; // 이미지 위치
-//		JButton btnDoUpdate = new JButton(); 
-//		JButton btnNoUpdate = new JButton();
 
 		JPanel pnComment = new JPanel();
 		pnComment.setBackground(Color.white);
@@ -60,7 +64,7 @@ public class AllCommentUI extends JPanel {
 
 		JLabel lbProfile = new JLabel();
 		lbProfile.setBounds(10, 10, 55, 55);
-		lbProfile.setIcon(new ImageIcon("E:/2020/java/workspace/instagram/icon/icPerson.png"));
+		lbProfile.setIcon(new ImageIcon(IC_LOC + "icPerson.png"));
 
 		JLabel lbUID = new JLabel();
 		lbUID.setBounds(75, 15, 100, 20);
@@ -77,46 +81,11 @@ public class AllCommentUI extends JPanel {
 		lbCDate.setFont(font3);
 		lbCDate.setText(cCDate);
 
-//		btnDoUpdate.setBounds(355, 690, 60, 30); // ���� ���� ��ư
-//		btnDoUpdate.setFont(font2);
-//		btnDoUpdate.setText("Done");
-//		btnDoUpdate.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
-//				String cUDate = String.valueOf(format.format(new Date()));
-//
-////				rud.updatePost(cNo, taCon.getText(), cUDate);
-////
-////				taCon.setFocusable(false);
-////				taCon.setBorder(null);
-//				pnComment.remove(btnDoUpdate);
-//				pnComment.remove(btnNoUpdate);
-//				pnComment.repaint();
-//			}
-//		});
-//
-//		btnNoUpdate.setBounds(420, 690, 65, 30); // ���� ��� ��ư
-//		btnNoUpdate.setFont(font2);
-//		btnNoUpdate.setText("cancel");
-//		btnNoUpdate.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-////				taCon.setFocusable(false);
-//
-//				pnComment.remove(btnDoUpdate);
-//				pnComment.remove(btnNoUpdate);
-//				pnComment.repaint();
-//
-//				System.out.println("���� ���");
-//			}
-//		});
-
 		JButton btnUpdate = new JButton();
-		btnUpdate.setIcon(new ImageIcon(IC_LOC + "icUpdate.png"));
-		btnUpdate.setBounds(420, 10, 30, 30);
+		btnUpdate.setIcon(new ImageIcon(IC_LOC + "icUpdate2.png"));
+		btnUpdate.setBounds(440, 10, 30, 30);
+		btnUpdate.setContentAreaFilled(false);
+		btnUpdate.setBorder(null);
 		btnUpdate.addActionListener(new ActionListener() {
 
 			@Override
@@ -124,8 +93,15 @@ public class AllCommentUI extends JPanel {
 				int result = JOptionPane.showConfirmDialog(pnComment, "Update?", null, JOptionPane.YES_NO_OPTION);
 
 				if (result == JOptionPane.YES_OPTION) {
+					commentList = dao.read("cNo", cNo);
 
-					pnComment.repaint();
+					for (int i = 0; i < commentList.size(); i++) {
+						dto = commentList.get(i);
+						String con = dto.getcCon();
+						com.cNo = cNo; // 현재 선택한 댓글 번호 세팅
+						com.taCon.setText(con);
+						// 새고...하고 싶다
+					}
 				} else if (result == JOptionPane.NO_OPTION) {
 					JOptionPane.showMessageDialog(pnComment, "cancle");
 				}
@@ -133,8 +109,10 @@ public class AllCommentUI extends JPanel {
 		});
 
 		JButton btnDelete = new JButton();
-		btnDelete.setIcon(new ImageIcon(IC_LOC + "icDelete.png"));
-		btnDelete.setBounds(460, 10, 30, 30);
+		btnDelete.setIcon(new ImageIcon(IC_LOC + "icDelete2.png"));
+		btnDelete.setBounds(470, 10, 30, 30);
+		btnDelete.setContentAreaFilled(false);
+		btnDelete.setBorder(null);
 		btnDelete.addActionListener(new ActionListener() {
 
 			@Override
@@ -143,19 +121,18 @@ public class AllCommentUI extends JPanel {
 
 				if (result == JOptionPane.YES_OPTION) {
 					rud.deletePost(cNo);
-
-					pnComment.revalidate();
-					pnComment.repaint();
+					// 새고...하고 싶다
 				} else if (result == JOptionPane.NO_OPTION) {
 					JOptionPane.showMessageDialog(pnComment, "cancle");
 				}
 			}
 		});
 
-//		pnComment.add(btnDoUpdate);
-//		pnComment.add(btnNoUpdate);
-		pnComment.add(btnUpdate);
-		pnComment.add(btnDelete);
+		if (uID.matches(loginID)) {
+			pnComment.add(btnUpdate);
+			pnComment.add(btnDelete);
+		}
+		
 		pnComment.add(lbProfile);
 		pnComment.add(lbUID);
 		pnComment.add(lbCon);

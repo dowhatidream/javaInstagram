@@ -1,5 +1,6 @@
 package panel;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -13,28 +14,38 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import myMenu.CommentRUD;
+import myMenu.NowUser;
 
 public class CommentUI extends JPanel {
-
-	String loginID = "aaaa";
+	String loginID = NowUser.getloginID(); // 현재 로긴한 유저
+	
+	JTextArea taCon;
+	int cNo;
 
 	public CommentUI(int pNo) {
-		JTextArea taCon = new JTextArea();
-		taCon.setBounds(10, 10, 420, 50);
 
-		JButton btnCreate = new JButton("post");
-		btnCreate.setBounds(440, 10, 60, 50);
-		btnCreate.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
+		taCon = new JTextArea();
+		taCon.setBounds(10, 10, 440, 50);
+
+		JButton btnCreate = new JButton("POST");
+		btnCreate.setBounds(450, 10, 60, 50);
+		btnCreate.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+		btnCreate.setContentAreaFilled(false);
+		btnCreate.setBorder(null);
 		btnCreate.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String cCDate = String.valueOf(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()));
+				String date = String.valueOf(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
 				String cCon = taCon.getText();
 
 				if (!cCon.matches("")) {
 					CommentRUD rud = new CommentRUD();
-					rud.createComment(cCon, cCDate, loginID, pNo); // ?????
+					if (cNo == 0) {
+						rud.createComment(cCon, date, loginID, pNo);
+					} else {
+						rud.updatePost(cNo, cCon, date);
+					}
 
 					taCon.setText(null);
 				} else {
